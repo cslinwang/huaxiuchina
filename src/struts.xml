@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="drcj" extends="struts-default" namespace="/">
+		<action name="drcjSelectAllAction" class="com.huaxiuchina.action.DrcjAction"
+			method="selectAll">
+			<result name="decjSelectAll">/drcj/drcjlist.jsp</result>
+		</action>
+
+	</package>
+	<!-- 股票 -->
+	<package name="gp" extends="struts-default" namespace="/">
+		<!-- 查询所有 -->
+		<action name="gpSelectAllAction" class="com.huaxiuchina.action.GpAction"
+			method="selectAll">
+			<result name="gpSelectAll">/gp/gplist.jsp</result>
+		</action>
+		<!-- 上传 -->
+		<action name="uploadAction" class="com.huaxiuchina.action.GpUploadAction"
+			method="execute">
+			<result name="uploadSuccess">/gp/gpdetail.jsp</result>
+		</action>
+		<!-- 下载 -->
+		<action name="downloadAction" class="com.huaxiuchina.action.GpAction"
+			method="download">
+			<result name="downloadSuccess">/gp/gpdetail.jsp</result>
+		</action>
+	</package>
+
+	<!-- 测试 -->
+	<package name="test" extends="struts-default" namespace="/">
+		<action name="testAction" class="com.huaxiuchina.action.TestAction"
+			method="test">
+			<result name="success">/index.jsp</result>
+		</action>
+	</package>
+
+</struts>    
