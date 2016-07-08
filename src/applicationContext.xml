@@ -28,6 +28,8 @@
 			<list>
 				<value>com/huaxiuchina/model/Drcj.hbm.xml</value>
 				<value>com/huaxiuchina/model/Gp.hbm.xml</value>
+				<value>com/huaxiuchina/model/Daydeal.hbm.xml</value>
+				
 			</list>
 		</property>
 	</bean>
