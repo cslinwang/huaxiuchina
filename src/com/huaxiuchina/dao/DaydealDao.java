@@ -12,16 +12,16 @@ import com.huaxiuchina.util.XLSWriter;
 
 // 当日成交
 public class DaydealDao {
+
 	/*
 	 * private HibernateTemplate hibernateTemplate;
 	 * 
 	 * public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 	 * this.hibernateTemplate = hibernateTemplate; }
 	 */
-	public ApplicationContext ac = new ClassPathXmlApplicationContext(
-			"applicationContext.xml");
-	private HibernateTemplate hibernateTemplate = (HibernateTemplate) ac
-			.getBean("hibernateTemplate");
+
+	public ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+	private HibernateTemplate hibernateTemplate = (HibernateTemplate) ac.getBean("hibernateTemplate");
 
 	public void add(Daydeal daydeal) {
 		// TODO Auto-generated method stub
@@ -69,9 +69,5 @@ public class DaydealDao {
 				"from Daydeal where dm=? and date=? and username=?", dm, date,
 				username);
 	}
-	/*
-	 * public static void main(String[] args) throws IOException {
-	 * System.out.println("开始读取"); DaydealDao dao =new DaydealDao(); new
-	 * XLSWriter().XLSWriter(dao.selectAll()); }
-	 */
+
 }

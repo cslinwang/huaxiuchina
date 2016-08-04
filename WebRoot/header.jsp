@@ -34,9 +34,8 @@ label {
 <body>
 	<h2 >华秀资本后台管理系统</h2>
 	<div class="topnav">
-		你好：<span style="color:#F00">${sessionScope.yh.yhm }</span> <a
-			href="login.jsp" target="_parent">注销登录</a>|<a href="mainAction"
-			target="_parent">前台</a>
+		你好：<span style="color:#F00">${sessionScope.user.name }</span> <a
+			href="login.jsp" target="_parent">注销登录</a>
 		<div class="sitenav">
 			<div class="welcome"></div>
 			<div class="resize"></div>

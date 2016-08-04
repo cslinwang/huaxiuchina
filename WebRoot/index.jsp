@@ -11,7 +11,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>大学英语在线练习后台管理</title>
+<title>华秀资本后台管理系统</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
