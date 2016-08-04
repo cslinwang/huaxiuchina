@@ -69,7 +69,7 @@
 </head>
 
 <body>
-		enctype="multipart/form-data">
+		<form action="upload.action" method="post" enctype="multipart/form-data">
 		<div class=formzone>
 			<div class=searchzone>
 

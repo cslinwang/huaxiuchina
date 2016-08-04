@@ -34,45 +34,53 @@
 						cellspacing="0">
 						<tr>
 							<td align="center" valign="middle" class="bgtop"><font
-								color="#FFFFFF"><b>股票详情</b> </font></td>
+								color="#FFFFFF"><b>股票详情</b> </font>
+							</td>
 						</tr>
 					</table>
 					<TABLE cellSpacing=0 cellPadding=3 width="100%" align=center
 						border=0>
 						<TBODY>
-<tr>
-<td><a href="downloadAction">导出</a></td>
-</tr>
 							<tr align="center" bgcolor="#ebf0f7">
-								<td height="25">代码</td>
-								<td wheight="25">买入价</td>
-								<td height="25">卖出价</td>
-								<td height="25">所属行业</td>
-								<td height="25">最高</td>
-								<td height="25">最低</td>
-								<td height="25">开盘</td>
-								<td height="25">昨收</td>
+								<td height="25" width="10%">日期</td>
+								<td height="25" width="10%">代码</td>
+								<td height="25" width="10%">名称</td>
+								<td height="25" width="10%">最高</td>
+								<td height="25" width="10%">最低</td>
+								<td height="25" width="10%">开盘</td>
+								<td height="25" width="10%">昨收</td>
+								<td height="25" width="10%">k</td>
+								<td height="25" width="10%">j</td>
+								<td height="25" width="10%">操作</td>
+
 
 							</tr>
 
-							<c:forEach var="gp" items="${sessionScope.gpList }">
+							<c:forEach var="gp" items="${sessionScope.gplist }">
 								<tr align='center' bgcolor='#FFFFFF'
 									onmouseover='this.style.background="#F2FDFF"'
 									onmouseout='this.style.background="#FFFFFF"'>
+									<td height="24">${gp.date }</td>
 									<td height="24">${gp.dm }</td>
-									<td height="24">${gp.mrj }</td>
-									<td height="24">${gp.mcj }</td>
-									<td height="24">${gp.sshy }</td>
+									<td height="24">${gp.mc }</td>
 									<td height="24">${gp.zg }</td>
 									<td height="24">${gp.zd1 }</td>
 									<td height="24">${gp.kp }</td>
 									<td height="24">${gp.zs1 }</td>
-									
+									<td height="24">${gp.k }</td>
+									<td height="24">${gp.j }</td>
+									<%
+										if (session.getAttribute("model").equals(0)) {
+									%>
+									<td><a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">编辑</a>
+									</td>
+									<%
+										}
+									%>
 								</tr>
 							</c:forEach>
 						</TBODY>
-					</TABLE>
-				</td>
+					</TABLE></td>
 			</tr>
 		</table>
 		</DIV>

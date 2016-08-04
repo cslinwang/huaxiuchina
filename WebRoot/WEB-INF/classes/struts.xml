@@ -1,38 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<package name="drcj" extends="struts-default" namespace="/">
-		<action name="drcjSelectAllAction" class="com.huaxiuchina.action.DrcjAction"
-			method="selectAll">
-			<result name="decjSelectAll">/drcj/drcjlist.jsp</result>
-		</action>
-
-	</package>
 	<!-- 股票 -->
 	<package name="gp" extends="struts-default" namespace="/">
 		<!-- 查询所有 -->
 		<action name="gpSelectAllAction" class="com.huaxiuchina.action.GpAction"
-			method="selectAll">
-			<result name="gpSelectAll">/gp/gplist.jsp</result>
+			method="selectAllByDate">
+			<result name="gpSelectAllByDate">/gp/gplist.jsp</result>
 		</action>
 		<!-- 上传 -->
-		<action name="uploadAction" class="com.huaxiuchina.action.GpUploadAction"
+		<action name="upload" class="com.huaxiuchina.action.GpUploadAction"
 			method="execute">
-			<result name="uploadSuccess">/gp/gpdetail.jsp</result>
+			<result name="uploadSuccess">/gp/gplist.jsp</result>
 		</action>
 		<!-- 下载 -->
 		<action name="downloadAction" class="com.huaxiuchina.action.GpAction"
 			method="download">
 			<result name="downloadSuccess">/gp/gpdetail.jsp</result>
 		</action>
-	</package>
-
-	<!-- 测试 -->
-	<package name="test" extends="struts-default" namespace="/">
-		<action name="testAction" class="com.huaxiuchina.action.TestAction"
-			method="test">
-			<result name="success">/index.jsp</result>
+		<action name="gpUpdate" class="com.huaxiuchina.action.GpAction"
+			method="gpUpdate">
+			<result name="gpUpdate">/gp/gpdetail.jsp</result>
+		</action>
+		<action name="gpUpdate1" class="com.huaxiuchina.action.GpAction"
+			method="gpUpdate1">
+			<result name="gpUpdate1">/gp/gplist.jsp</result>
 		</action>
 	</package>
+	<!-- 成交记录 -->
+	<package name="daydeal" extends="struts-default" namespace="/">
 
+		<!-- 下载 -->
+		<action name="daydealDownloadAction" class="com.huaxiuchina.action.DaydealDownloadAction"
+			method="exportExcel">
+			<result name="success" type="stream">
+				<!-- 下载文件的类型,文件类型对照表参看 http://tool.oschina.net/commons -->
+				<param name="contentType">application/vnd.ms-excel</param>
+				<!-- 返回流 excelStream为action中的流变量名称 -->
+				<param name="inputName">excelStream</param>
+				<!-- 文件下载的处理方式，包括内联(inline)和附件(attachment) 提示下载 -->
+				<param name="contentDisposition">attachment;filename=${excelFileName}</param>
+				<param name="bufferSize">2048</param>
+			</result>
+		</action>
+		<!-- 上传 -->
+		<action name="daydealUploadAction" class="com.huaxiuchina.action.DaydealUploadAction"
+			method="execute">
+			<result name="daydealUploadSuccess">/daydeal/daydeallist.jsp</result>
+		</action>
+		<!-- 查询所有 -->
+		<action name="selectByNameDate" class="com.huaxiuchina.action.DaydealAction"
+			method="selectByNameDate">
+			<result name="selectAllSuccess">/daydeal/daydeallist.jsp</result>
+		</action>
+
+	</package>
+	<!-- 用户 -->
+	<package name="user" extends="struts-default" namespace="/">
+		<!-- 登录 -->
+		<action name="login" class="com.huaxiuchina.action.UserAction"
+			method="login">
+			<result name="loginSuccess">index.jsp</result>
+			<result name="loginFalse">/login.jsp</result>
+		</action>
+		<!-- 查询所有 -->
+		<action name="userSelectAll" class="com.huaxiuchina.action.UserAction"
+			method="userSelectAll">
+			<result name="userSelectAll">/user/userlist.jsp</result>
+		</action>
+		<!-- 修改 -->
+		<action name="userUpdate" class="com.huaxiuchina.action.UserAction"
+			method="userUpdate">
+			<result name="userUpdate">/user/userdetail.jsp</result>
+		</action>
+		<action name="userUpdate1" class="com.huaxiuchina.action.UserAction"
+			method="userUpdate1">
+			<result name="userUpdate1">/user/userlist.jsp</result>
+		</action>
+		<!-- 增加 -->
+		<action name="userAdd" class="com.huaxiuchina.action.UserAction"
+			method="userAdd">
+			<result name="userAdd">/user/userlist.jsp</result>
+		</action>
+		<!-- 删除 -->
+		<action name="userDelete" class="com.huaxiuchina.action.UserAction"
+			method="userDelete">
+			<result name="userDelete">/user/userlist.jsp</result>
+		</action>
+	</package>
 </struts>    

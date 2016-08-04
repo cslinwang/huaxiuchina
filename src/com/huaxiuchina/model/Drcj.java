@@ -15,10 +15,10 @@ public class Drcj implements java.io.Serializable {
 	private String jylb;
 	private Integer zqdm;
 	private String zqmc;
-	private double cjjg;
+	private Double cjjg;
 	private Integer cjsl;
 	private Integer zqye;
-	private double cjje;
+	private Double cjje;
 	private String gpdm;
 
 	// Constructors
@@ -28,8 +28,8 @@ public class Drcj implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Drcj(Date rq, String jylb, Integer zqdm, String zqmc, double cjjg,
-			Integer cjsl, Integer zqye, double cjje, String gpdm) {
+	public Drcj(Date rq, String jylb, Integer zqdm, String zqmc, Double cjjg,
+			Integer cjsl, Integer zqye, Double cjje, String gpdm) {
 		this.rq = rq;
 		this.jylb = jylb;
 		this.zqdm = zqdm;
@@ -83,11 +83,11 @@ public class Drcj implements java.io.Serializable {
 		this.zqmc = zqmc;
 	}
 
-	public double getCjjg() {
+	public Double getCjjg() {
 		return this.cjjg;
 	}
 
-	public void setCjjg(double cjjg) {
+	public void setCjjg(Double cjjg) {
 		this.cjjg = cjjg;
 	}
 
@@ -107,11 +107,11 @@ public class Drcj implements java.io.Serializable {
 		this.zqye = zqye;
 	}
 
-	public double getCjje() {
+	public Double getCjje() {
 		return this.cjje;
 	}
 
-	public void setCjje(double cjje) {
+	public void setCjje(Double cjje) {
 		this.cjje = cjje;
 	}
 

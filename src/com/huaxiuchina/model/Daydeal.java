@@ -4,7 +4,7 @@ package com.huaxiuchina.model;
  * Daydeal entity. @author MyEclipse Persistence Tools
  */
 
-public class Daydeal implements java.io.Serializable {
+public class Daydeal implements java.io.Serializable, Comparable<Daydeal> {
 
 	// Fields
 
@@ -129,6 +129,11 @@ public class Daydeal implements java.io.Serializable {
 
 	public void setSum(String sum) {
 		this.sum = sum;
+	}
+
+	public int compareTo(Daydeal o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

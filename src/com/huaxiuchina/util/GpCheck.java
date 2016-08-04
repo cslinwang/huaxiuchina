@@ -69,8 +69,8 @@ public class GpCheck {
 		return gpList;
 	}
 
-	public static void main(String[] args) throws Exception {
-		List list = new GpCheck().gpCheck("E:/111.xls");
+	public void gpUpload(String url) throws Exception {
+		List list = new GpCheck().gpCheck(url);
 		// System.out.println(list);
 		System.out.println(list.size() / 32);
 		for (int i = 1; i < list.size() / 32; i++) {
@@ -95,8 +95,7 @@ public class GpCheck {
 					.toString(), listTemp.get(26).toString(), listTemp.get(27)
 					.toString(), listTemp.get(28).toString(), listTemp.get(29)
 					.toString(), listTemp.get(30).toString(), listTemp.get(31)
-					.toString());
-			System.out.println(gp);
+					.toString(), new GetDate().getDate().toString());
 			new GpDao().add(gp);
 		}
 	}

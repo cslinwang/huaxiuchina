@@ -26,11 +26,8 @@
 
 <body>
 	<div align="center">
-		<form action="drcjSelectAllAction" method="post">
-			<input type="submit" value="点击查看列表">
-		</form>
-		<form action="testAction" method="post">
-			<input type="submit" value="测试按钮">
+		<form action="daydealDownloadAction" method="post">
+			<input type="submit" value="下载">
 		</form>
 	</div>
 

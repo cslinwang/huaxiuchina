@@ -6,38 +6,38 @@
 -->
 <hibernate-mapping>
     <class name="com.huaxiuchina.model.Daydeal" table="daydeal" catalog="mmc">
-        <id name="dealid" type="integer">
+        <id name="dealid" type="java.lang.Integer">
             <column name="dealid" />
-            <generator class="native" />
+            <generator class="identity" />
         </id>
-        <property name="dm" type="string">
+        <property name="dm" type="java.lang.String">
             <column name="dm" />
         </property>
-        <property name="mc" type="string">
+        <property name="mc" type="java.lang.String">
             <column name="mc" />
         </property>
-        <property name="mmbz" type="string">
+        <property name="mmbz" type="java.lang.String">
             <column name="mmbz" />
         </property>
-        <property name="cjjg" type="string">
+        <property name="cjjg" type="java.lang.String">
             <column name="cjjg" />
         </property>
-        <property name="cjsl" type="string">
+        <property name="cjsl" type="java.lang.String">
             <column name="cjsl" />
         </property>
-        <property name="date" type="string">
+        <property name="date" type="java.lang.String">
             <column name="date" />
         </property>
-        <property name="model" type="integer">
+        <property name="model" type="java.lang.Integer">
             <column name="model" />
         </property>
-        <property name="username" type="string">
+        <property name="username" type="java.lang.String">
             <column name="username" />
         </property>
-        <property name="base" type="string">
+        <property name="base" type="java.lang.String">
             <column name="base" />
         </property>
-        <property name="sum" type="string">
+        <property name="sum" type="java.lang.String">
             <column name="sum" />
         </property>
     </class>

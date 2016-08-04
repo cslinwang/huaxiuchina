@@ -65,8 +65,8 @@ public class XLSReader {
         }  
         return hospitalList;  
     }  
-    public static void main(String[] args)throws Exception {  
+   /* public static void main(String[] args)throws Exception {  
         List list = readExcelData("E:/111.xls");   
         System.out.println(list);  
-    }  
+    }  */
 }  

@@ -46,43 +46,67 @@
 	<div class="infobox"></div>
 	<div class="menu">
 		<%
+			if(session.getAttribute("user")!=null){
+			if(session.getAttribute("model").equals(0)){
 			
 		%>
 		<!-- Item 1 Strat -->
 		<dl>
 
 			<dt>
-				<a href="###" onclick="showHide('items1');" target="_self">股票管理</a>
+				<a href="###" onclick="showHide('items1');" target="_self">用户管理</a>
 			</dt>
 			<dd id="items1" style="display:none;">
 				<ul>
 
-					<li><a href='gp/gpupload.jsp' target='main'>股票信息上传</a>
+					<li><a href='user/useradd.jsp' target='main'>用户增加</a>
+					<li><a href='userSelectAll' target='main'>用户列表</a></li>
+
 					</li>
-					<li><a href='gpSelectAllAction' target='main'>当日股票详情</a>
 					</li>
 				</ul>
 			</dd>
 		</dl>
 		<!-- Item 1 End -->
+		<%
+		} 
+		if(session.getAttribute("model").equals(0)^session.getAttribute("model").equals(1)){
+		%>
+
 		<!-- Item 2 Strat -->
 		<dl>
 
 			<dt>
-				<a href="###" onclick="showHide('items2');" target="_self">成交管理</a>
+				<a href="###" onclick="showHide('items2');" target="_self">股票管理</a>
 			</dt>
 			<dd id="items2" style="display:none;">
 				<ul>
 
-					<li><a href='yonghu/yonghuadd.jsp' target='main'>成交上传</a>
-					</li>
-					<li><a href='yonghuSelectAllAction' target='main'>成交查看</a>
-					</li>
+					<li><a href='gp/gpupload.jsp' target='main'>股票信息上传</a></li>
+					<li><a href='gpSelectAllAction' target='main'>当日股票详情</a></li>
 				</ul>
 			</dd>
 		</dl>
 		<!-- Item 2 End -->
-		
+		<%} %>
+		<!-- Item 3 Strat -->
+		<dl>
+
+			<dt>
+				<a href="###" onclick="showHide('items3');" target="_self">成交管理</a>
+			</dt>
+			<dd id="items3" style="display:none;">
+				<ul>
+
+					<li><a href="daydeal/daydealupload.jsp" target='main'>成交上传</a></li>
+					<li><a href="selectByNameDate?name=${user.name }" target='main'>成交查看</a>
+					</li>
+					<!-- <li><a href='cj/cjdownd.jsp' target='main'>成交下载</a></li> -->
+				</ul>
+			</dd>
+		</dl>
+		<!-- Item 3 End -->
+		<%} %>
 	</div>
 </body>
 </html>

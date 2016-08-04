@@ -25,8 +25,7 @@
 </head>
 
 <span style="font-size:12px"><body>
-		<form action="upload.action" method="post"
-			enctype="multipart/form-data">
+		<form action="upload.action" method="post" enctype="multipart/form-data">
 			请选择需要上传的文件：<input type="file" id="dofile" name="file" /><br /> <input
 				type="submit" id="btnupload" name="btnupload" value="开始上传">
 		</form>

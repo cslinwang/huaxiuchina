@@ -12,15 +12,15 @@ import com.huaxiuchina.util.XLSWriter;
 
 // 当日成交
 public class GpDao {
-	private HibernateTemplate hibernateTemplate;
+	/*private HibernateTemplate hibernateTemplate;
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
-	}
-	/*public ApplicationContext ac = new ClassPathXmlApplicationContext(
+	}*/
+	public ApplicationContext ac = new ClassPathXmlApplicationContext(
 			"applicationContext.xml");
 	private HibernateTemplate hibernateTemplate =  (HibernateTemplate) ac.getBean("hibernateTemplate");
-*/
+
 	public void add(Gp gp) {
 		// TODO Auto-generated method stub
 		this.hibernateTemplate.save(gp);
@@ -36,10 +36,10 @@ public class GpDao {
 		this.hibernateTemplate.update(gp);
 	}
 
-	public List select(Gp gp) {
+	public List selectByDm(String dm) {
 		// TODO Auto-generated method stub
 		return this.hibernateTemplate.find("from Gp where dm=?",
-				gp.getDm());
+				dm);
 	}
 
 	public List selectAll() {
@@ -51,5 +51,16 @@ public class GpDao {
 		GpDao dao =new GpDao();
 		new XLSWriter().XLSWriter(dao.selectAll());
 	}*/
+	
+	public List selectAllByDate(String date) {
+		// TODO Auto-generated method stub
+		return this.hibernateTemplate.find("from Gp where date=?",
+				date);
+	}
+	public List selectByDmAndDate(String date,String dm) {
+		// TODO Auto-generated method stub
+		return this.hibernateTemplate.find("from Gp where date=? and dm=?",
+				date,dm);
+	}
 }
  

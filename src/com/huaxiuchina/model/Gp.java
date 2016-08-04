@@ -41,6 +41,9 @@ public class Gp implements java.io.Serializable {
 	private String rzf6;
 	private String rhs3;
 	private String rhs6;
+	private String date;
+	private Double k;
+	private Double j;
 
 	// Constructors
 
@@ -48,14 +51,14 @@ public class Gp implements java.io.Serializable {
 	public Gp() {
 	}
 
-	/** full constructor */
+	/** minimal constructor */
 	public Gp(String dm, String mc, String zx, String zf, String zd,
 			String mrj, String mcj, String zs, String hs, String je,
 			String syl, String sshy, String zg, String zd1, String kp,
 			String zs1, String zf1, String lb, String wb, String wc, String jj,
 			String np, String wp, String sjl, String zgb, String zsz,
 			String ltgb, String ltsz, String rzf3, String rzf6, String rhs3,
-			String rhs6) {
+			String rhs6, String date) {
 		this.dm = dm;
 		this.mc = mc;
 		this.zx = zx;
@@ -88,6 +91,52 @@ public class Gp implements java.io.Serializable {
 		this.rzf6 = rzf6;
 		this.rhs3 = rhs3;
 		this.rhs6 = rhs6;
+		this.date = date;
+	}
+
+	/** full constructor */
+	public Gp(String dm, String mc, String zx, String zf, String zd,
+			String mrj, String mcj, String zs, String hs, String je,
+			String syl, String sshy, String zg, String zd1, String kp,
+			String zs1, String zf1, String lb, String wb, String wc, String jj,
+			String np, String wp, String sjl, String zgb, String zsz,
+			String ltgb, String ltsz, String rzf3, String rzf6, String rhs3,
+			String rhs6, String date, Double k, Double j) {
+		this.dm = dm;
+		this.mc = mc;
+		this.zx = zx;
+		this.zf = zf;
+		this.zd = zd;
+		this.mrj = mrj;
+		this.mcj = mcj;
+		this.zs = zs;
+		this.hs = hs;
+		this.je = je;
+		this.syl = syl;
+		this.sshy = sshy;
+		this.zg = zg;
+		this.zd1 = zd1;
+		this.kp = kp;
+		this.zs1 = zs1;
+		this.zf1 = zf1;
+		this.lb = lb;
+		this.wb = wb;
+		this.wc = wc;
+		this.jj = jj;
+		this.np = np;
+		this.wp = wp;
+		this.sjl = sjl;
+		this.zgb = zgb;
+		this.zsz = zsz;
+		this.ltgb = ltgb;
+		this.ltsz = ltsz;
+		this.rzf3 = rzf3;
+		this.rzf6 = rzf6;
+		this.rhs3 = rhs3;
+		this.rhs6 = rhs6;
+		this.date = date;
+		this.k = k;
+		this.j = j;
 	}
 
 	// Property accessors
@@ -354,6 +403,30 @@ public class Gp implements java.io.Serializable {
 
 	public void setRhs6(String rhs6) {
 		this.rhs6 = rhs6;
+	}
+
+	public String getDate() {
+		return this.date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Double getK() {
+		return this.k;
+	}
+
+	public void setK(Double k) {
+		this.k = k;
+	}
+
+	public Double getJ() {
+		return this.j;
+	}
+
+	public void setJ(Double j) {
+		this.j = j;
 	}
 
 }
