@@ -125,7 +125,7 @@
 			</dd>
 		</dl>
 		<!-- Item 4 End -->
-		<%
+		<%-- <%
 			if (session.getAttribute("model").equals(0)) {
 		%>
 		<!-- Item 5 Strat -->
@@ -147,7 +147,7 @@
 		<!-- Item 5 End -->
 		<%
 			}
-		%>
+		%> --%>
 		<%
 			}
 		%>

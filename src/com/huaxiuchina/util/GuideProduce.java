@@ -30,7 +30,6 @@ public class GuideProduce {
 	java.text.DecimalFormat df = new DecimalFormat("#.00"); // 格式化double
 	double k = 0; // k值
 	double j = 0; // J值
-	int flag = 0; // 标志，看该股票什么情况，0代表只买，满值只卖。
 	String dm1 = null; // 表格第一列数据
 	String mc1 = null; // 表格第二列数据
 	Gp tempGp = new Gp();
@@ -63,11 +62,12 @@ public class GuideProduce {
 		// System.out.println("only: " + only);
 		return only;
 	}
-
+	
 	public void check(String name) throws Exception {
 		List only = new GuideProduce().getOnly(name);
 		// 遍历查看股票买卖情况
 		for (int i = 0; i < only.size(); i++) {
+			int flag = 0; // 标志，看该股票什么情况，0代表只买，满值只卖。
 			GpDao gpDao = new GpDao();
 			temp = daydealDao.selectByDm(only.get(i).toString(), name,
 					new GetDate().getDate());
@@ -123,10 +123,12 @@ public class GuideProduce {
 			sum += Integer.valueOf(daydeal.getCjsl());
 		}
 		// 遍历算股票的加权均价
+		double priceToday = 0;
 		for (int l = 0; l < temp.size(); l++) {
 			daydeal = (Daydeal) temp.get(l);
 			price += Double.valueOf(daydeal.getCjjg())
 					* Double.valueOf(daydeal.getCjsl()) / sum;
+			priceToday=price;
 		}
 		// 买入价格
 		modell.setPrice(df.format(price));
@@ -169,7 +171,22 @@ public class GuideProduce {
 					/ Integer.valueOf(modell.getSum());
 			modell.setPrice(df.format(price));
 			modell.setMid(modelll.getMid());
-			modelDao.update(modell);
+			if(modell.getModel()<10){
+				//判断是否超标
+				int tempNum = (int) (Integer.valueOf(modell.getSum())-((int)Integer.valueOf(modell.getBase()) * (Math.pow(2, (modell.getModel()-1)))));
+				if(tempNum>0){
+					modell.setSum(String.valueOf(Integer.valueOf(modell.getSum())-tempNum));
+					modelDao.update(modell);
+					modell.setModel(modell.getModel()+1);
+					modell.setSum(String.valueOf(tempNum));
+					modell.setPrice(String.valueOf(priceToday));
+					modelDao.add(modell);
+				}else{
+					modelDao.update(modell);
+				}				
+			}
+			
+			
 		}
 	}
 
@@ -411,8 +428,9 @@ public class GuideProduce {
 			}
 		} else if (sumBuy < sumSell) {
 			e = sell.size();
-			for (int l = 0; l <sell.size(); l++) {
-				System.out.println("!");
+			for (int l = 0; l <buy.size(); l++) {
+				System.out.println("卖多");
+				//拿到卖的每一笔交易				
 				int temp1 = Integer.valueOf(((Daydeal) buy.get(l)).getCjsl());				
 				while (true) {
 					if (sell.size() != 0) {
@@ -476,6 +494,6 @@ public class GuideProduce {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new GuideProduce().check("HXSX0019");
+		new GuideProduce().check("HXSX0010");
 	}
 }
