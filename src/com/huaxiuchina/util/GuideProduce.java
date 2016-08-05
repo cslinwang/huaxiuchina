@@ -253,29 +253,29 @@ public class GuideProduce {
 				.getSum());
 		System.out.println("t_tepsum" + tepsum);
 		System.out.println("t_p" + p);
-		if (tepsum == p) {			
+		if (tepsum == p) {
 			p = base * (Math.pow(multiple, (model)));
 			// 设立model数量sum
 			// System.out.println("t_"+String.valueOf((model * base)));
 			modell.setSum(String.valueOf((int) (base * (Math.pow(multiple,
 					(model - 1))))));
 			// 设立model模型model
-			if(multiple==1.5){
-				modell.setModel(model+10);
-			}else{
+			if (multiple == 1.5) {
+				modell.setModel(model + 10);
+			} else {
 				modell.setModel(model);
-			}		
+			}
 		} else {
 			// System.out.println("t_tepsum: " + tepsum);
 			// System.out.println("t_p: " + (int)p);
 			p = tepsum - p;
 			modell.setSum(String.valueOf(((int) p)));
 			// 设立model模型
-			System.out.println("aaaaaaa"+multiple);
-			if(multiple==1.5){
+			System.out.println("倍数： " + multiple);
+			if (multiple == 1.5) {
 				System.out.println();
 				modell.setModel(model + 11);
-			}else{
+			} else {
 				modell.setModel(model + 1);
 			}
 		}
@@ -368,6 +368,7 @@ public class GuideProduce {
 		Double price = 0.00;
 		int sumBuy = 0, sumSell = 0;
 		int d = 0, e = 0;
+		int base = 0;
 		List buy = new ArrayList<Daydeal>();
 		List sell = new ArrayList<Daydeal>();
 		for (int l = 0; l < temp.size(); l++) {
@@ -408,9 +409,14 @@ public class GuideProduce {
 			e = buy.size();
 			d = 0;
 			double priceToday = 0;
+			int model = 0;
+			System.out.println(sell.size());
 			for (int l = sell.size() - 1; l >= 0; l--) {
+				System.out.println("买多");
 				int temp1 = Integer.valueOf(((Daydeal) sell.get(l)).getCjsl());
 				while (true) {
+					//System.out.println(buy.size());
+					//System.out.println(e);
 					if (buy.size() != 0) {
 						if (e == buy.size()) {
 							temp2 = Integer.valueOf(((Daydeal) buy.get(0))
@@ -424,7 +430,8 @@ public class GuideProduce {
 						sumBuy -= (temp1);
 						d = temp2 + d - temp1;
 						temp2 = 0;
-						if (d != 0) {
+						System.out.println("t_d："+d);
+						if (d == 0) {
 							e--;
 						}
 						break;
@@ -436,43 +443,44 @@ public class GuideProduce {
 						}
 					}
 				}
-				// 用户
-				modell.setUser(name);
-				// 代码
-				modell.setDm(dm1);
-				// 遍历算股票的交易总数量
-				sumBuy = sumBuy;
-				// 如果买卖抵消直接返回
-				if (sumBuy == 0) {
-					return;
-				}
-				// 遍历算股票的加权均价
-				daydeal = (Daydeal) buy.get(0);
-				price += Double.valueOf(daydeal.getCjjg()) * d / sumBuy;
-				if (buy.size() > 1) {
-					for (int m = 1; m < buy.size(); m++) {
-						daydeal = (Daydeal) buy.get(m);
-						price += Double.valueOf(daydeal.getCjjg())
-								* Double.valueOf(daydeal.getCjsl()) / sumBuy;
-					}
-				}
-				priceToday = price;
-				// modell的价格
-				modell.setPrice(df.format(price));
-				daydeal = (Daydeal) temp.get(temp.size() - 1);
-				int model = daydeal.getModel();
-				int base = Integer.valueOf(daydeal.getBase());
-				// modell的base
-				modell.setBase(String.valueOf(base));
-				if (model < 10) {
-					modellTemp = new GuideProduce().onlyBuyModelType(model, 2,
-							base, price, temp);
-				} else {
-					modellTemp = new GuideProduce().onlyBuyModelType(
-							model - 10, 1.5, base, price, temp);
-				}
-
 			}
+			// 用户
+			modell.setUser(name);
+			// 代码
+			modell.setDm(dm1);
+			// 遍历算股票的交易总数量
+			sumBuy = sumBuy;
+			// 如果买卖抵消直接返回
+			if (sumBuy == 0) {
+				return;
+			}
+			// 遍历算股票的加权均价
+			daydeal = (Daydeal) buy.get(0);
+			price += Double.valueOf(daydeal.getCjjg()) * d / sumBuy;
+			if (buy.size() > 1) {
+				for (int m = 1; m < buy.size(); m++) {
+					daydeal = (Daydeal) buy.get(m);
+					price += Double.valueOf(daydeal.getCjjg())
+							* Double.valueOf(daydeal.getCjsl()) / sumBuy;
+				}
+			}
+			priceToday = price;
+			// modell的价格
+			modell.setPrice(df.format(price));
+			daydeal = (Daydeal) temp.get(temp.size() - 1);
+			model = daydeal.getModel();
+			base = Integer.valueOf(daydeal.getBase());
+			// modell的base
+			modell.setBase(String.valueOf(base));
+			if (model < 10) {
+				modellTemp = new GuideProduce().onlyBuyModelType(model, 2,
+						base, price, temp);
+				System.out.println("asd");
+			} else {
+				modellTemp = new GuideProduce().onlyBuyModelType(model - 10,
+						1.5, base, price, temp);
+			}
+			System.out.println("asd");
 			// 对结果进行处理
 			temp = modelDao.selectByDm(dm1, name,
 					Integer.valueOf(modellTemp.getModel()));
@@ -529,6 +537,7 @@ public class GuideProduce {
 			e = sell.size();
 			System.out.println("sell.size(): " + e);
 			d = 0;
+			int model = 0;
 			for (int l = 0; l < buy.size(); l++) {
 				System.out.println("卖多");
 				// 拿到卖的每一笔交易
@@ -585,8 +594,8 @@ public class GuideProduce {
 			System.out.println("t__price:" + price);
 			modell.setPrice(df.format(price));
 			daydeal = (Daydeal) temp.get(temp.size() - 1);
-			int model = daydeal.getModel();
-			int base = Integer.valueOf(daydeal.getBase());
+			model = daydeal.getModel();
+			base = Integer.valueOf(daydeal.getBase());
 			// model base
 			modell.setBase(String.valueOf(base));
 			if (model < 10) {
@@ -601,6 +610,6 @@ public class GuideProduce {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new GuideProduce().check("HXSX0019");
+		new GuideProduce().check("HXSX0010");
 	}
 }
