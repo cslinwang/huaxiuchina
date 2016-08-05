@@ -100,10 +100,10 @@ public class DayDealInCheck {
 					}
 					// model操作
 					daydeal = (Daydeal) tecentDatList.get(j);
-					int dmNum= Integer.valueOf(daydeal.getDm().toString());
-					//60****、000***默认使用2倍模型
-					//002***、300***默认使用1.5倍模型
-					if (model < 2000^dmNum>600000) {
+					int dmNum = Integer.valueOf(daydeal.getDm().toString());
+					// 60****、000***默认使用2倍模型
+					// 002***、300***默认使用1.5倍模型
+					if (model < 2000 ^ dmNum > 600000) {
 						model = 01;
 						daydeal.setModel(model);
 						daydealDao.update(daydeal);
@@ -157,6 +157,7 @@ public class DayDealInCheck {
 					base = daydeal.getBase();
 					// 临时变量，存储预期建仓值
 					int sum1 = 0;
+					System.out.println("model"+model);
 					// 如果是模式1
 					if (model < 10) {
 						// 看看有没有满仓
@@ -169,9 +170,9 @@ public class DayDealInCheck {
 							}
 							// 判断是否完成模型；
 							System.out.println("目标：" + sum1);
-							if (sum == sum1) {
+							if (sum > sum1) {
 								model++;
-								//modelDao.selectByDmAndDate(dm, username);
+								// modelDao.selectByDmAndDate(dm, username);
 							}
 							// 如果没完成
 							else if (sum < sum1
@@ -192,12 +193,13 @@ public class DayDealInCheck {
 					}
 					// 如果是模型2
 					else if (10 < model & model < 20) {
+						
 						model -= 10;
 						for (int k = 0; k <= model; k++) {
 							sum1 += (int) (1000 * (Math.pow(1.5, k)));
 						}
 						// 判断是否完成模型；
-						if (sum == sum1) {
+						if (sum > sum1) {
 							model += 11;
 						}
 						// 如果没完成
@@ -224,7 +226,7 @@ public class DayDealInCheck {
 	// 旧股票满仓建立模型情况
 
 	public static void main(String[] args) throws Exception {
-		new DayDealInCheck().dayDealInCheck("root");
+		new DayDealInCheck().dayDealInCheck("HXSX0010");
 
 	}
 }

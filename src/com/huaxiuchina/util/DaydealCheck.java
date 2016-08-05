@@ -99,10 +99,9 @@ public class DaydealCheck {
 				System.out.println("成功写入临时交易记录");
 			} else {
 				// 如果撤单无操作
-
 			}
-			new DayDealInCheck().dayDealInCheck(name);
 		}
+		new DayDealInCheck().dayDealInCheck(name);
 	}
 
 	// 第二种表读取
@@ -180,7 +179,7 @@ public class DaydealCheck {
 				System.out.println("股票代码： " + listTemp.get(1).toString());
 				Daydeal daydeal1 = new Daydeal(listTemp.get(1).toString(),
 						listTemp.get(2).toString(), listTemp.get(3).toString(),
-						String.valueOf( Double.parseDouble(listTemp.get(4)
+						String.valueOf(Double.parseDouble(listTemp.get(4)
 								.toString())), String.valueOf((int) Double
 								.parseDouble(listTemp.get(5).toString())),
 						new GetDate().getDate(), null, name, null, null);

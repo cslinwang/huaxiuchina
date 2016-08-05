@@ -75,7 +75,7 @@ public class GuideOut {
 			Double k = gp.getK();
 			Double j = gp.getJ();
 			double zs = Double.valueOf(gp.getZs1());
-			System.out.println("t"+modelTemp.getPrice());
+			System.out.println("t_price"+modelTemp.getPrice());
 			double price = Double.valueOf(modelTemp.getPrice());
 			// 判断买入是否有效
 			if (price * k >= zs * 0.9) {
@@ -144,14 +144,16 @@ public class GuideOut {
 		// 满仓值
 		int sum1 = 0;
 		int model = modelTempl.getModel();
+		System.out.println("t_model:"+model);
 		// 计算该阶段满仓数
 		if (model < 10) {
 			sum1 = (int) (Integer.valueOf(modelTempl.getBase()) * Math.pow(2,
 					(model - 1)));
 		} else {
 			sum1 = (int) (Integer.valueOf(modelTempl.getBase()) * Math.pow(1.5,
-					(model - 1)));
+					(model - 11)));
 		}
+		System.out.println(sum1);
 		if (sum == sum1) {
 			guide = null;
 		} else {

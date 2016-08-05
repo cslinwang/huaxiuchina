@@ -3,7 +3,7 @@
   type="WEB"
   name="huaxiuchina"
   id="myeclipse.1468473307014"
-  context-root="/huaxiuchina1.0"
+  context-root="/huaxiuchina"
   j2ee-spec="5.0"
   archive="huaxiuchina.war">
   <attributes>
