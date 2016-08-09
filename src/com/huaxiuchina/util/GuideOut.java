@@ -56,7 +56,7 @@ public class GuideOut {
 	ModelDao modelDao = new ModelDao();
 
 	public static void main(String[] args) throws Exception {
-		new GuideOut().guideProduce("HXSX0010");
+		new GuideOut().guideProduce("HXSX0019");
 	}
 
 	public List guideProduce(String name) throws Exception {
@@ -74,8 +74,9 @@ public class GuideOut {
 					.get(0);
 			Double k = gp.getK();
 			Double j = gp.getJ();
-			double zs = Double.valueOf(gp.getZs1());
-			System.out.println("t_price"+modelTemp.getPrice());
+			System.out.println("收盘价：" + gp.getZx());
+			double zs = Double.valueOf(gp.getZx());
+			System.out.println("t_price" + modelTemp.getPrice());
 			double price = Double.valueOf(modelTemp.getPrice());
 			// 判断买入是否有效
 			if (price * k >= zs * 0.9) {
@@ -93,20 +94,42 @@ public class GuideOut {
 			}
 		}
 		temp = gpDao.selectAllByDate(date);
+		Gp gp1 = null;
+		// 下阶段补仓
 		for (int i = 0; i < temp.size(); i++) {
-			Gp gp1 = (Gp) temp.get(i);
+			gp1 = (Gp) temp.get(i);
+			Double k = gp1.getK();
+			Double j = gp1.getJ();
+			String dm = gp1.getDm();
 			modelList = modelDao.selectByDm(gp1.getDm(), name);
 			if (modelList.size() != 0) {
+				Guide guide1 = new Guide();
 				modelTemp = (Model) modelList.get(modelList.size() - 1);
-				double zs = Double.valueOf(gp1.getZs1());
-				double price = Double.valueOf(modelTemp.getPrice());
+				double zs = Double.valueOf(gp1.getZx());
+				int model = modelTemp.getModel();
+				int numTecent=0;
+				if (model < 4) {
+					numTecent = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
+							.pow(2, (model-1))));
+				}
+				// 模型二
+				else if (model > 10 && model < 15) {
+					numTecent = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
+							.pow(1.5, (model-11))));
+				}
+				double priceOld=Double.valueOf(modelTemp.getPrice());
+				int sumOld=Integer.valueOf(modelTemp.getSum());
+				double price = (priceOld*sumOld+priceOld*k*(numTecent-sumOld))/numTecent;
+				System.out.println(price * k + "  " + zs * 0.9);
 				if (price * k >= zs * 0.9) {
-					guide.setDm(gp1.getDm());
-					guide.setMc(gp1.getMc());
-					guide.setPrice(Double.valueOf(modelTemp.getPrice())
+
+					guide1.setDm(dm);
+					guide1.setMc(gp1.getMc());
+					System.out.println("guide" + guide1.getMc());
+					guide1.setPrice(Double.valueOf(modelTemp.getPrice())
 							* gp1.getK());
-					guide.setPrice1(Double.valueOf(gp1.getZs1()) * 0.9);
-					int model = modelTemp.getModel();
+					guide1.setPrice1(Double.valueOf(gp1.getZx()) * 0.9);
+					
 					int num = 0;
 					// 模型一
 					if (model < 4) {
@@ -116,20 +139,22 @@ public class GuideOut {
 					// 模型二
 					else if (model > 10 && model < 15) {
 						num = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
-								.pow(1.5, (model))));
+								.pow(1.5, (model-10))));
 					}
 					// 建模全部完成
 					else {
 						// 不处理
 					}
-					guide.setNum(num);
-					guide.setSum(guide.getPrice() * guide.getNum());
-					if (guide.getNum() != 0) {
-						buyGuide.add(guide);
+					guide1.setNum(num);
+					guide1.setSum(guide1.getPrice() * guide1.getNum());
+					if (guide1.getNum() != 0) {
+						buyGuide.add(guide1);
 					}
 				}
 			}
 		}
+		System.out.println("buySize"+buyGuide.size());
+		System.out.println("sellSize"+sellGuide.size());
 		guideList.add(buyGuide);
 		guideList.add(sellGuide);
 		return guideList;
@@ -144,7 +169,7 @@ public class GuideOut {
 		// 满仓值
 		int sum1 = 0;
 		int model = modelTempl.getModel();
-		System.out.println("t_model:"+model);
+		System.out.println("t_model:" + model);
 		// 计算该阶段满仓数
 		if (model < 10) {
 			sum1 = (int) (Integer.valueOf(modelTempl.getBase()) * Math.pow(2,
@@ -161,7 +186,7 @@ public class GuideOut {
 			guide.setDm(gp.getDm());
 			guide.setMc(gp.getMc());
 			guide.setPrice(price);
-			guide.setPrice1(Double.valueOf(gp.getZs1()) * 0.9);
+			guide.setPrice1(Double.valueOf(gp.getZx()) * 0.9);
 			guide.setNum(sum1 - sum);
 			guide.setSum(guide.getPrice() * guide.getNum());
 		}
@@ -177,7 +202,7 @@ public class GuideOut {
 		guide.setDm(gp.getDm());
 		guide.setMc(gp.getMc());
 		guide.setPrice(price);
-		guide.setPrice1(Double.valueOf(gp.getZs1()) * 1.1);
+		guide.setPrice1(Double.valueOf(gp.getZx()) * 1.1);
 		guide.setNum(sum);
 		guide.setSum(guide.getPrice() * guide.getNum());
 		return guide;
@@ -186,6 +211,7 @@ public class GuideOut {
 	public ByteArrayInputStream guideOut(String name) throws Exception {
 		int hangshu = 0;
 		guideList = new GuideOut().guideProduce(name);
+
 		buyGuide = (List) guideList.get(0);
 		sellGuide = (List) guideList.get(1);
 		System.out.println("开始生成");

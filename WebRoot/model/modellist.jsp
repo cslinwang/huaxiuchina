@@ -53,19 +53,23 @@
 					<tr align='center' bgcolor='#FFFFFF'
 						onmouseover='this.style.background="#F2FDFF"'
 						onmouseout='this.style.background="#FFFFFF"'>
-						
+
 						<td height="24">${modellist.dm }</td>
 						<td height="24">${modellist.model }</td>
 						<td height="24">${modellist.price }</td>
 						<td height="24">${modellist.base }</td>
 						<td height="24">${modellist.sum }</td>
-						<td><a href="modelUpdate?mid=${modellist.mid }">编辑</a><%--| <a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">删除</a> --%></td>
+						<td><a href="modelUpdate?mid=${modellist.mid }">编辑</a>
+						<%--| <a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">删除</a> --%>
+						</td>
 					</tr>
 				</c:forEach>
-				<DIV class=searchzone>
-
-			
-		</DIV>
+				<tr align="center" bgcolor="#ebf0f7">
+					<td><a
+						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b>
+					</a></td>
+				</tr>
+				<DIV class=searchzone></DIV>
 			</table>
 		</div>
 	</div>

@@ -170,7 +170,7 @@ public class DayDealInCheck {
 							}
 							// 判断是否完成模型；
 							System.out.println("目标：" + sum1);
-							if (sum > sum1) {
+							if (sum >= sum1) {
 								model++;
 								// modelDao.selectByDmAndDate(dm, username);
 							}
@@ -219,8 +219,7 @@ public class DayDealInCheck {
 				}
 			}
 		}
-		System.out.println("模型建立开始");
-		new GuideProduce().check(username);
+		
 	}
 
 	// 旧股票满仓建立模型情况

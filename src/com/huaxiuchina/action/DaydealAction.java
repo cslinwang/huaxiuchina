@@ -46,12 +46,12 @@ public class DaydealAction implements ModelDriven<Daydeal> {
 		return "selectAllSuccess";
 		
 	}
-	//
+	//±à¼­
 	public String daydealUpdate(){
 		session.put("daydealdetail", daydealDao.selectById(daydeal.getDealid()).get(0));
 		return "daydealUpdate";
 	}
-	//
+	//±£´æ
 	public String daydealUpdate1() throws Exception{
 		Daydeal daydeal1=(Daydeal) daydealDao.selectById(daydeal.getDealid()).get(0);
 		daydeal1.setModel(daydeal.getModel());

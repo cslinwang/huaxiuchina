@@ -76,7 +76,7 @@
 				</c:forEach>
 				<tr align="center" bgcolor="#ebf0f7">
 					<td><a
-						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b>
+						href="modelUpdate2?name=${sessionScope.user.name }"><b>更新账户模型</b>
 					</a>
 					</td>
 				</tr>

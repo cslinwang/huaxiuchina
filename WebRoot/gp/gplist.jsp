@@ -49,6 +49,7 @@
 							<td width="9%" height="25">日期</td>
 							<td width="9%" height="25">代码</td>
 							<td width="9%" height="25">名称</td>
+							<td width="9%" height="25">最新</td>
 							<td width="9%" height="25">最高</td>
 							<td width="9%" height="25">最低</td>
 							<td width="9%" height="25">开盘</td>
@@ -67,6 +68,7 @@
 								<td height="24">${gp.date }</td>
 								<td height="24">${gp.dm }</td>
 								<td height="24">${gp.mc }</td>
+								<td height="24">${gp.zx }</td>
 								<td height="24">${gp.zg }</td>
 								<td height="24">${gp.zd1 }</td>
 								<td height="24">${gp.kp }</td>

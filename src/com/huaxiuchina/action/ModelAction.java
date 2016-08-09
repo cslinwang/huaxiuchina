@@ -62,4 +62,12 @@ public class ModelAction implements ModelDriven<Model> {
 		session.put("modellist", new ModelDao().selectByName(name));
 		return "modelUpdate1";
 	}
+	//股票
+		public String modelUpdate2() throws Exception{
+			//模型修正
+			System.out.println("模型修正开始");
+			new GuideProduce().check(name);
+			session.put("modellist", new ModelDao().selectByName(name));
+			return "modelUpdate2";
+		}
 }

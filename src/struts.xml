@@ -77,6 +77,11 @@
 			method="modelUpdate1">
 			<result name="modelUpdate1">/model/modellist.jsp</result>
 		</action>
+		<!-- 模型自动更新 -->
+		<action name="modelUpdate2" class="com.huaxiuchina.action.ModelAction"
+			method="modelUpdate2">
+			<result name="modelUpdate2">/model/modellist.jsp</result>
+		</action>
 	</package>
 	<!-- 用户 -->
 	<package name="user" extends="struts-default" namespace="/">
