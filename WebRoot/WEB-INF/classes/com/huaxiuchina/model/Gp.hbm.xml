@@ -6,118 +6,118 @@
 -->
 <hibernate-mapping>
     <class name="com.huaxiuchina.model.Gp" table="gp" catalog="mmc">
-        <id name="gpid" type="java.lang.Integer">
+        <id name="gpid" type="integer">
             <column name="gpid" />
-            <generator class="identity" />
+            <generator class="native" />
         </id>
-        <property name="dm" type="java.lang.String">
+        <property name="dm" type="string">
             <column name="dm" not-null="true">
                 <comment>代码</comment>
             </column>
         </property>
-        <property name="mc" type="java.lang.String">
+        <property name="mc" type="string">
             <column name="mc" not-null="true">
                 <comment>名称</comment>
             </column>
         </property>
-        <property name="zx" type="java.lang.String">
+        <property name="zx" type="string">
             <column name="zx" not-null="true" />
         </property>
-        <property name="zf" type="java.lang.String">
+        <property name="zf" type="string">
             <column name="zf" not-null="true" />
         </property>
-        <property name="zd" type="java.lang.String">
+        <property name="zd" type="string">
             <column name="zd" not-null="true" />
         </property>
-        <property name="mrj" type="java.lang.String">
+        <property name="mrj" type="string">
             <column name="mrj" not-null="true" />
         </property>
-        <property name="mcj" type="java.lang.String">
+        <property name="mcj" type="string">
             <column name="mcj" not-null="true" />
         </property>
-        <property name="zs" type="java.lang.String">
+        <property name="zs" type="string">
             <column name="zs" not-null="true" />
         </property>
-        <property name="hs" type="java.lang.String">
+        <property name="hs" type="string">
             <column name="hs" not-null="true" />
         </property>
-        <property name="je" type="java.lang.String">
+        <property name="je" type="string">
             <column name="je" not-null="true" />
         </property>
-        <property name="syl" type="java.lang.String">
+        <property name="syl" type="string">
             <column name="syl" not-null="true" />
         </property>
-        <property name="sshy" type="java.lang.String">
+        <property name="sshy" type="string">
             <column name="sshy" not-null="true" />
         </property>
-        <property name="zg" type="java.lang.String">
+        <property name="zg" type="string">
             <column name="zg" not-null="true" />
         </property>
-        <property name="zd1" type="java.lang.String">
+        <property name="zd1" type="string">
             <column name="zd1" not-null="true" />
         </property>
-        <property name="kp" type="java.lang.String">
+        <property name="kp" type="string">
             <column name="kp" not-null="true" />
         </property>
-        <property name="zs1" type="java.lang.String">
+        <property name="zs1" type="string">
             <column name="zs1" not-null="true" />
         </property>
-        <property name="zf1" type="java.lang.String">
+        <property name="zf1" type="string">
             <column name="zf1" not-null="true" />
         </property>
-        <property name="lb" type="java.lang.String">
+        <property name="lb" type="string">
             <column name="lb" not-null="true" />
         </property>
-        <property name="wb" type="java.lang.String">
+        <property name="wb" type="string">
             <column name="wb" not-null="true" />
         </property>
-        <property name="wc" type="java.lang.String">
+        <property name="wc" type="string">
             <column name="wc" not-null="true" />
         </property>
-        <property name="jj" type="java.lang.String">
+        <property name="jj" type="string">
             <column name="jj" not-null="true" />
         </property>
-        <property name="np" type="java.lang.String">
+        <property name="np" type="string">
             <column name="np" not-null="true" />
         </property>
-        <property name="wp" type="java.lang.String">
+        <property name="wp" type="string">
             <column name="wp" not-null="true" />
         </property>
-        <property name="sjl" type="java.lang.String">
+        <property name="sjl" type="string">
             <column name="sjl" not-null="true" />
         </property>
-        <property name="zgb" type="java.lang.String">
+        <property name="zgb" type="string">
             <column name="zgb" not-null="true" />
         </property>
-        <property name="zsz" type="java.lang.String">
+        <property name="zsz" type="string">
             <column name="zsz" not-null="true" />
         </property>
-        <property name="ltgb" type="java.lang.String">
+        <property name="ltgb" type="string">
             <column name="ltgb" not-null="true" />
         </property>
-        <property name="ltsz" type="java.lang.String">
+        <property name="ltsz" type="string">
             <column name="ltsz" not-null="true" />
         </property>
-        <property name="rzf3" type="java.lang.String">
+        <property name="rzf3" type="string">
             <column name="rzf3" not-null="true" />
         </property>
-        <property name="rzf6" type="java.lang.String">
+        <property name="rzf6" type="string">
             <column name="rzf6" not-null="true" />
         </property>
-        <property name="rhs3" type="java.lang.String">
+        <property name="rhs3" type="string">
             <column name="rhs3" not-null="true" />
         </property>
-        <property name="rhs6" type="java.lang.String">
+        <property name="rhs6" type="string">
             <column name="rhs6" not-null="true" />
         </property>
-        <property name="date" type="java.lang.String">
+        <property name="date" type="string">
             <column name="date" not-null="true" />
         </property>
-        <property name="k" type="java.lang.Double">
-            <column name="k" precision="11" scale="0" />
+        <property name="k" type="double">
+            <column name="k" precision="11" scale="3" />
         </property>
-        <property name="j" type="java.lang.Double">
-            <column name="j" precision="11" scale="0" />
+        <property name="j" type="double">
+            <column name="j" precision="11" scale="3" />
         </property>
     </class>
 </hibernate-mapping>

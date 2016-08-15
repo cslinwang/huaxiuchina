@@ -157,9 +157,10 @@ public class DayDealInCheck {
 					base = daydeal.getBase();
 					// 临时变量，存储预期建仓值
 					int sum1 = 0;
-					System.out.println("model"+model);
+					System.out.println("model: "+model);
 					// 如果是模式1
 					if (model < 10) {
+						/*System.out.println("model1");
 						// 看看有没有满仓
 						if (model == (zuorimodel + 1)) {
 							model--;
@@ -189,17 +190,29 @@ public class DayDealInCheck {
 						// 写入数据
 						daydeal.setModel(model);
 						daydealDao.update(daydeal);
+						System.out.println("model修正成功");*/
+						//新版模型逻辑
+						for (int k = 0; k <= 8; k++) {
+							sum1 += (int) (Integer.valueOf(base) * (Math.pow(2, k)));
+							if(sum<sum1){
+								model=k;
+								break;
+							}
+						}
+						daydeal.setModel(model);
+						daydealDao.update(daydeal);
 						System.out.println("model修正成功");
 					}
 					// 如果是模型2
 					else if (10 < model & model < 20) {
-						
+						/*System.out.println("model2");
 						model -= 10;
 						for (int k = 0; k <= model; k++) {
-							sum1 += (int) (1000 * (Math.pow(1.5, k)));
+							sum1 += (int) (Integer.valueOf(base) * (Math.pow(1.5, k)));
 						}
+						System.out.println(sum+ "   "+sum1);
 						// 判断是否完成模型；
-						if (sum > sum1) {
+						if (sum >= sum1) {
 							model += 11;
 						}
 						// 如果没完成
@@ -212,6 +225,18 @@ public class DayDealInCheck {
 							model -= 9;
 						}
 						// 写入数据
+						System.out.println("model: "+model);
+						daydeal.setModel(model);
+						daydealDao.update(daydeal);
+						System.out.println("model修正成功");*/
+						//新版模型判断
+						for (int k = 0; k <= 8; k++) {
+							sum1 += (int) (Integer.valueOf(base) * (Math.pow(1.5, k)));
+							if(sum<sum1){
+								model=k+10;
+								break;
+							}
+						}
 						daydeal.setModel(model);
 						daydealDao.update(daydeal);
 						System.out.println("model修正成功");
@@ -225,7 +250,12 @@ public class DayDealInCheck {
 	// 旧股票满仓建立模型情况
 
 	public static void main(String[] args) throws Exception {
-		new DayDealInCheck().dayDealInCheck("HXSX0010");
-
+		//new DayDealInCheck().dayDealInCheck("HXSX0010");
+		int sum1=0;
+		for (int k = 0; k <= 2; k++) {
+			sum1 += (int) (Integer.valueOf(1000) * (Math.pow(1.5, k)));
+			
+		}
+		System.out.println(sum1);
 	}
 }

@@ -42,8 +42,8 @@ public class Gp implements java.io.Serializable {
 	private String rhs3;
 	private String rhs6;
 	private String date;
-	private Double k;
-	private Double j;
+	private double k;
+	private double j;
 
 	// Constructors
 
@@ -101,7 +101,7 @@ public class Gp implements java.io.Serializable {
 			String zs1, String zf1, String lb, String wb, String wc, String jj,
 			String np, String wp, String sjl, String zgb, String zsz,
 			String ltgb, String ltsz, String rzf3, String rzf6, String rhs3,
-			String rhs6, String date, Double k, Double j) {
+			String rhs6, String date, double k, double j) {
 		this.dm = dm;
 		this.mc = mc;
 		this.zx = zx;
@@ -413,19 +413,19 @@ public class Gp implements java.io.Serializable {
 		this.date = date;
 	}
 
-	public Double getK() {
+	public double getK() {
 		return this.k;
 	}
 
-	public void setK(Double k) {
+	public void setK(double k) {
 		this.k = k;
 	}
 
-	public Double getJ() {
+	public double getJ() {
 		return this.j;
 	}
 
-	public void setJ(Double j) {
+	public void setJ(double j) {
 		this.j = j;
 	}
 

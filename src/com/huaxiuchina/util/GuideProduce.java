@@ -228,7 +228,7 @@ public class GuideProduce {
 			}
 
 			if (sum11 != sum22) {
-				System.out.println("sum11"+sum11+"sum22"+sum22);
+				System.out.println("sum11" + sum11 + "sum22" + sum22);
 				price = (Double.valueOf(modell1.getPrice()) * sum11 + priceToday
 						* (sum22 - sum11))
 						/ sum22;
@@ -307,6 +307,7 @@ public class GuideProduce {
 		daydeal = (Daydeal) temp.get(temp.size() - 1);
 		int model = daydeal.getModel();
 		int base = Integer.valueOf(daydeal.getBase());
+		System.out.println("base" + base);
 		if (model < 10) {
 			new GuideProduce().onlySellModelType(model, 2, base, price, temp,
 					dm1, name);
@@ -322,8 +323,11 @@ public class GuideProduce {
 		System.out.println("model= " + model + " ");
 		double p = 0;
 		// 应该的数量
+		System.out.println("multiple" + multiple);
 		for (int l = 0; l < model; l++) {
-			p += base * ((int) Math.pow(multiple, (l)));
+			System.out.println("????");
+			p += base * (Math.pow(multiple, (l)));
+			System.out.println(p);
 		}
 		// 数字
 		int tepsum = Integer.valueOf(((Daydeal) temp.get(temp.size() - 1))
@@ -334,6 +338,7 @@ public class GuideProduce {
 		if (temp.size() != 0) {
 			modellTemp = (Model) temp.get(temp.size() - 1);
 		}
+		
 		while (true) {
 			if (temp.size() > 0) {
 				if (((Model) temp.get(temp.size() - 1)).getModel() > (model + 1)) {
@@ -343,6 +348,10 @@ public class GuideProduce {
 				break;
 			}
 			break;
+		}
+		System.out.println(temp.size());
+		if (temp.size() != 0) {
+			modellTemp = (Model) temp.get(temp.size() - 1);
 		}
 		System.out.println("t_tepsum: " + tepsum);
 		System.out.println("t_p: " + p);
@@ -617,6 +626,6 @@ public class GuideProduce {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new GuideProduce().check("HXSX0013");
+		new GuideProduce().check("HXSX0010");
 	}
 }

@@ -5,11 +5,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.Region;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -54,9 +58,10 @@ public class GuideOut {
 	Model modell = new Model();
 	Model modelTemp = new Model();
 	ModelDao modelDao = new ModelDao();
+	static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	public static void main(String[] args) throws Exception {
-		new GuideOut().guideProduce("HXSX0019");
+		new GuideOut().guideProduce("HXSX0020");
 	}
 
 	public List guideProduce(String name) throws Exception {
@@ -76,60 +81,82 @@ public class GuideOut {
 			Double j = gp.getJ();
 			System.out.println("收盘价：" + gp.getZx());
 			double zs = Double.valueOf(gp.getZx());
-			System.out.println("t_price" + modelTemp.getPrice());
-			double price = Double.valueOf(modelTemp.getPrice());
+			double priceToday = Double.valueOf(modelTemp.getPrice());
+			List preModelList = modelDao.selectByDm(modelTemp.getDm(), name,
+					modelTemp.getModel() - 1);
+			double priceLastDay = 0;
+			if (preModelList.size() != 0) {
+				priceLastDay = Double.valueOf(((Model) preModelList.get(0))
+						.getPrice());
+			} else {
+				priceLastDay = priceToday;
+			}
 			// 判断买入是否有效
-			if (price * k >= zs * 0.9) {
+			if (priceLastDay * k >= zs * 0.9) {
 				// System.out.println("@@@" + price * j);
-				Guide guide1 = new GuideOut().Buy(modelTemp, gp, price * k);
+				System.out.println("t_price" + priceLastDay);
+				Guide guide1 = new GuideOut().Buy(modelTemp, gp, priceLastDay
+						* k);
 				if (guide1 != null) {
 					buyGuide.add(guide1);
 				}
 			}
+
 			// 卖出
-			if (price * j <= zs * 1.1) {
-				// System.out.println("&&&" + price * j);
-				Guide guide1 = new GuideOut().Sell(modelTemp, gp, price * j);
+			if (priceToday * j <= zs * 1.1) {
+				System.out.println("&&&" + priceToday * j);
+				Guide guide1 = new GuideOut().Sell(modelTemp, gp, priceToday
+						* j);
 				sellGuide.add(guide1);
 			}
 		}
 		temp = gpDao.selectAllByDate(date);
-		Gp gp1 = null;
+
 		// 下阶段补仓
 		for (int i = 0; i < temp.size(); i++) {
+			Gp gp1 = null;
 			gp1 = (Gp) temp.get(i);
 			Double k = gp1.getK();
 			Double j = gp1.getJ();
 			String dm = gp1.getDm();
 			modelList = modelDao.selectByDm(gp1.getDm(), name);
 			if (modelList.size() != 0) {
-				Guide guide1 = new Guide();
+				Guide guide = new Guide();
 				modelTemp = (Model) modelList.get(modelList.size() - 1);
 				double zs = Double.valueOf(gp1.getZx());
 				int model = modelTemp.getModel();
-				int numTecent=0;
+				int numTecent = 0;
 				if (model < 4) {
 					numTecent = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
-							.pow(2, (model-1))));
+							.pow(2, (model - 1))));
 				}
 				// 模型二
 				else if (model > 10 && model < 15) {
 					numTecent = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
-							.pow(1.5, (model-11))));
+							.pow(1.5, (model - 11))));
 				}
-				double priceOld=Double.valueOf(modelTemp.getPrice());
-				int sumOld=Integer.valueOf(modelTemp.getSum());
-				double price = (priceOld*sumOld+priceOld*k*(numTecent-sumOld))/numTecent;
-				System.out.println(price * k + "  " + zs * 0.9);
-				if (price * k >= zs * 0.9) {
 
-					guide1.setDm(dm);
-					guide1.setMc(gp1.getMc());
-					System.out.println("guide" + guide1.getMc());
-					guide1.setPrice(Double.valueOf(modelTemp.getPrice())
-							* gp1.getK());
-					guide1.setPrice1(Double.valueOf(gp1.getZx()) * 0.9);
-					
+				double priceOld = Double.valueOf(modelTemp.getPrice());
+				double priceNew = Double.valueOf(modelTemp.getPrice());
+				List preModelList = modelDao.selectByDm(modelTemp.getDm(),
+						name, modelTemp.getModel() - 1);
+				if (preModelList.size() != 0) {
+					priceNew = Double.valueOf(((Model) preModelList.get(0))
+							.getPrice());
+				}
+				int sumOld = Integer.valueOf(modelTemp.getSum());
+				double price1 = (priceOld * sumOld + priceNew * k
+						* (numTecent - sumOld))
+						/ numTecent;
+
+				if (price1 * k >= zs * 0.9) {
+					guide.setDm(dm);
+					guide.setMc(gp1.getMc());
+					System.out.println("guide" + guide.getMc());
+					System.out.println("price2323测试" + price1 * k);
+					guide.setPrice(price1 * k);
+					guide.setPrice1(Double.valueOf(gp1.getZx()) * 0.9);
+
 					int num = 0;
 					// 模型一
 					if (model < 4) {
@@ -139,22 +166,22 @@ public class GuideOut {
 					// 模型二
 					else if (model > 10 && model < 15) {
 						num = (int) (Integer.valueOf(modelTemp.getBase()) * (Math
-								.pow(1.5, (model-10))));
+								.pow(1.5, (model - 10))));
 					}
 					// 建模全部完成
 					else {
 						// 不处理
 					}
-					guide1.setNum(num);
-					guide1.setSum(guide1.getPrice() * guide1.getNum());
-					if (guide1.getNum() != 0) {
-						buyGuide.add(guide1);
+					guide.setNum(num);
+					guide.setSum(guide.getPrice() * guide.getNum());
+					if (guide.getNum() != 0) {
+						buyGuide.add(guide);
 					}
 				}
 			}
 		}
-		System.out.println("buySize"+buyGuide.size());
-		System.out.println("sellSize"+sellGuide.size());
+		System.out.println("buySize" + buyGuide.size());
+		System.out.println("sellSize" + sellGuide.size());
 		guideList.add(buyGuide);
 		guideList.add(sellGuide);
 		return guideList;
@@ -170,6 +197,7 @@ public class GuideOut {
 		int sum1 = 0;
 		int model = modelTempl.getModel();
 		System.out.println("t_model:" + model);
+
 		// 计算该阶段满仓数
 		if (model < 10) {
 			sum1 = (int) (Integer.valueOf(modelTempl.getBase()) * Math.pow(2,
@@ -185,6 +213,7 @@ public class GuideOut {
 			modelTemp.getBase();
 			guide.setDm(gp.getDm());
 			guide.setMc(gp.getMc());
+			System.out.println("t_price1" + price);
 			guide.setPrice(price);
 			guide.setPrice1(Double.valueOf(gp.getZx()) * 0.9);
 			guide.setNum(sum1 - sum);
@@ -198,7 +227,12 @@ public class GuideOut {
 
 		// 实际值
 		int sum = Integer.valueOf(modelTempl.getSum());
-		modelTemp.getBase();
+		int modelSell = modelTempl.getModel();
+		if (modelSell == 1) {
+			sum = sum / 2;
+		} else if (modelSell == 11) {
+			sum = sum / 2;
+		}
 		guide.setDm(gp.getDm());
 		guide.setMc(gp.getMc());
 		guide.setPrice(price);
@@ -215,6 +249,7 @@ public class GuideOut {
 		buyGuide = (List) guideList.get(0);
 		sellGuide = (List) guideList.get(1);
 		System.out.println("开始生成");
+
 		// 创建工作薄
 		XSSFWorkbook workBook = new XSSFWorkbook();
 		// 设置字体格式
@@ -222,41 +257,97 @@ public class GuideOut {
 		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		XSSFCellStyle cellStyle = workBook.createCellStyle();
 		cellStyle.setFont(font);
+		cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+
+		XSSFCellStyle cellStyle1 = workBook.createCellStyle();
+		cellStyle1.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+		cellStyle1.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		cellStyle1.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+		cellStyle1.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+		cellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
 		// 在工作薄中创建一工作表
 		XSSFSheet sheet = workBook.createSheet();
 		// 建立表头
-		XSSFRow a1 = sheet.createRow(hangshu++);
+		int width1 = 3000;
+		sheet.setColumnWidth((short) 0, (short) 2500);
+		sheet.setColumnWidth((short) 1, (short) 2500);
+		sheet.setColumnWidth((short) 2, (short) 2500);
+		sheet.setColumnWidth((short) 3, (short) 2950);
+		sheet.setColumnWidth((short) 4, (short) 2500);
+		sheet.setColumnWidth((short) 5, (short) 2950);
+
+		XSSFRow row = sheet.createRow(hangshu++);
 		// sheet.addMergedRegion(new Region(0,(short)0,0,(short)1));
+		CellRangeAddress region1 = new CellRangeAddress(0, (short) 0, 0,
+				(short) 5);
+		sheet.addMergedRegion(region1);
 
-		XSSFCell b1 = a1.createCell(0);
-		b1.setCellStyle(cellStyle);
-		b1.setCellType(XSSFCell.CELL_TYPE_STRING);
-		b1.setCellValue(new XSSFRichTextString("账户"));
+		XSSFCell cell = row.createCell(0);
+		cell.setCellStyle(cellStyle);
+		cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(new XSSFRichTextString("交易指导明细"));
 
-		XSSFCell b2 = a1.createCell(1);
+		row = sheet.createRow(hangshu++);
+
+		cell = row.createCell(0);
+		cell.setCellStyle(cellStyle);
+
+		cell.setCellValue(new XSSFRichTextString("账户"));
+
+		XSSFCell b2 = row.createCell(1);
 		b2.setCellStyle(cellStyle);
 		b2.setCellType(XSSFCell.CELL_TYPE_STRING);
 		b2.setCellValue(new XSSFRichTextString(name));
 
-		XSSFCell b3 = a1.createCell(2);
+		XSSFCell b3 = row.createCell(2);
 		b3.setCellStyle(cellStyle);
 		b3.setCellType(XSSFCell.CELL_TYPE_STRING);
-		b3.setCellValue(new XSSFRichTextString("报告日期"));
+		b3.setCellValue(new XSSFRichTextString("生成日期"));
 
-		XSSFCell b4 = a1.createCell(3);
+		XSSFCell b4 = row.createCell(3);
 		b4.setCellStyle(cellStyle);
 		b4.setCellType(XSSFCell.CELL_TYPE_STRING);
 		b4.setCellValue(new XSSFRichTextString(new GetDate().getDate()));
 
+		cell = row.createCell(4);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue(new XSSFRichTextString("指导日期"));
+
+		// 看是不是星期天
+		String tecentDate = new GetDate().getDate();
+		String nextDate = new GetDate().nextDate(tecentDate);
+		Calendar c = Calendar.getInstance();
+		Date day = sdf.parse(nextDate);
+		c.setTime(day);
+		System.out.println(c.get(Calendar.DAY_OF_WEEK));
+		if (c.get(Calendar.DAY_OF_WEEK) == 7) {
+			nextDate = new GetDate().nextDate(nextDate);
+			nextDate = new GetDate().nextDate(nextDate);
+		}
+		cell = row.createCell(5);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue(new XSSFRichTextString(nextDate));
+		/*
+		 * b4=a1.createCell(4); b4.setCellValue(new XSSFRichTextString(new
+		 * GetDate().getDate()));
+		 */
+
 		XSSFRow a2 = sheet.createRow(hangshu++);
+		region1 = new CellRangeAddress(hangshu - 1, (short) hangshu - 1, 0,
+				(short) 5);
+		sheet.addMergedRegion(region1);
 
 		XSSFCell b5 = a2.createCell(0);
 		b5.setCellStyle(cellStyle);
 		b5.setCellType(XSSFCell.CELL_TYPE_STRING);
-		b5.setCellValue(new XSSFRichTextString("购买交易指导"));
+		b5.setCellValue(new XSSFRichTextString("补仓建议"));
 
 		// 在指定的索引处创建一行
-		XSSFRow row = sheet.createRow(hangshu++);
+		row = sheet.createRow(hangshu++);
 		// 在指定的索引处创建 一列（单元格）
 		XSSFCell dm = row.createCell(0);
 		// 定义单元格为字符串类型
@@ -280,7 +371,7 @@ public class GuideOut {
 		zg.setCellType(XSSFCell.CELL_TYPE_STRING);
 		zg.setCellStyle(cellStyle);
 		zg.setCellValue(new XSSFRichTextString("建仓数量"));
-		XSSFCell cell = row.createCell(5);
+		cell = row.createCell(5);
 		cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 		cell.setCellStyle(cellStyle);
 		cell.setCellValue(new XSSFRichTextString("预计成交额"));
@@ -290,29 +381,45 @@ public class GuideOut {
 				guide = (Guide) buyGuide.get(i);
 				XSSFRow tpr = sheet.createRow(hangshu++);
 				cell = tpr.createCell(0);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(guide.getDm()));
 				cell = tpr.createCell(1);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(guide.getMc()));
 				cell = tpr.createCell(2);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getPrice())));
 				cell = tpr.createCell(3);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getPrice1())));
 				cell = tpr.createCell(4);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(String.valueOf(guide
 						.getNum())));
 				cell = tpr.createCell(5);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getSum())));
 			}
 		}
+		row = sheet.createRow(hangshu++);
+		System.out.println(hangshu);
+		int maichu = hangshu;
+		// 参数1：行号 参数2：起始列号 参数3：行号 参数4：终止列号
+		region1 = new CellRangeAddress(hangshu - 1, (short) hangshu - 1, 0,
+				(short) 5);
+		sheet.addMergedRegion(region1);
+		cell = row.createCell(0);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue(new XSSFRichTextString("卖出指导"));
 		// 在指定的索引处创建一行
 		row = sheet.createRow(hangshu++);
 		// 在指定的索引处创建 一列（单元格）
@@ -348,24 +455,30 @@ public class GuideOut {
 				guide = (Guide) sellGuide.get(i);
 				XSSFRow tpr = sheet.createRow(hangshu++);
 				cell = tpr.createCell(0);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(guide.getDm()));
 				cell = tpr.createCell(1);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(guide.getMc()));
 				cell = tpr.createCell(2);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getPrice())));
 				cell = tpr.createCell(3);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getPrice1())));
 				cell = tpr.createCell(4);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(String.valueOf(guide
 						.getNum())));
 				cell = tpr.createCell(5);
+				cell.setCellStyle(cellStyle1);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(new XSSFRichTextString(df.format(guide
 						.getSum())));

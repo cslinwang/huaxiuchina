@@ -84,15 +84,21 @@ public class GpCheck {
 			double k = 0;
 			double j = 0;
 			Gp gp1 = null;
-			if (gpDao.selectByDmAndDate(
-					new GetDate().lastDate(new GetDate().getDate()),
-					listTemp.get(0).toString()).size() != 0) {
-				gp1 = (Gp) gpDao.selectByDmAndDate(
-						new GetDate().lastDate(new GetDate().getDate()),
-						listTemp.get(0).toString()).get(0);
-				k = gp1.getK();
-				j = gp1.getJ();
+			String lastDate = new GetDate().getDate();
+			for (int l = 0; l < 5; l++) {
+				if (gpDao.selectByDmAndDate(lastDate,
+						listTemp.get(0).toString()).size() != 0) {
+					gp1 = (Gp) gpDao.selectByDmAndDate(lastDate,
+							listTemp.get(0).toString()).get(0);
+					k = gp1.getK();
+					j = gp1.getJ();
+				}
+				if (k != 0) {
+					break;
+				}
+				lastDate = new GetDate().lastDate(lastDate);
 			}
+
 			Gp gp = new Gp(listTemp.get(0).toString(), listTemp.get(1)
 					.toString(), listTemp.get(2).toString(), listTemp.get(3)
 					.toString(), listTemp.get(4).toString(), listTemp.get(5)

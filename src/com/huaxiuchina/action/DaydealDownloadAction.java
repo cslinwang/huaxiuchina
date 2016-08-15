@@ -30,7 +30,7 @@ public class DaydealDownloadAction extends ActionSupport {
 			ByteArrayInputStream is = new GuideOut().guideOut(name);
 
 			excelStream = is; // 文件流
-			excelFileName = new GetDate().getDate() + ".xls"; // 设置下载的文件名
+			excelFileName = name + "_" + new GetDate().getDate() + ".xls"; // 设置下载的文件名
 			System.out.println("生成完毕: " + excelFileName);
 		} catch (Exception e) {
 			e.printStackTrace();

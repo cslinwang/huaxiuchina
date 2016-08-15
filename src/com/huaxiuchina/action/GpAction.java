@@ -61,13 +61,10 @@ public class GpAction implements ModelDriven<Gp> {
 	public String gpUpdate1() throws Exception {
 		double k = gp.getK();
 		double j = gp.getJ();
-		System.out.println("123124124124124" + k + "  " + j);
 		gp = (Gp) (serviceImp.selectByDmAndDate(new GetDate().getDate(),
 				gp.getDm()).get(0));
-		System.out.println("修改前" + k);
 		gp.setK(k);
 		gp.setJ(j);
-		System.out.println("更新后"+gp.getK());
 		serviceImp.update(gp);
 		
 		session.put("gplist",
