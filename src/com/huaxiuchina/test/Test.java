@@ -6,10 +6,12 @@ import com.huaxiuchina.util.XLSReader;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-		double a =  24.55;
-		int c = 700;
-		double b = 23.5373125*0.95;
-		int d = 3300;
+		double a =  22.36
+;
+		int c = 100;
+		double b = 22.44
+;
+		int d = 900;
 		double e = (a * c + b * d) / (c + d);
 
 		// double n = 21.77*1000

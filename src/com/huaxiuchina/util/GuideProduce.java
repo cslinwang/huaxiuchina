@@ -338,7 +338,7 @@ public class GuideProduce {
 		if (temp.size() != 0) {
 			modellTemp = (Model) temp.get(temp.size() - 1);
 		}
-		
+
 		while (true) {
 			if (temp.size() > 0) {
 				if (((Model) temp.get(temp.size() - 1)).getModel() > (model + 1)) {
@@ -363,7 +363,9 @@ public class GuideProduce {
 					(model - 1))))));
 			// 设立model模型model
 			System.out.println("delete");
-			modelDao.delete(modellTemp);
+			if (temp.size() != 0) {
+				modelDao.delete(modellTemp);
+			}
 		} else if (tepsum == 0) {
 			modelDao.delete(modellTemp);
 		} else {
