@@ -12,7 +12,7 @@ import com.huaxiuchina.util.XLSWriter;
 import com.opensymphony.xwork2.ActionContext;
 
 // 当日成交
-public class ModelDao {
+public class ModelDao extends HibernateTemplate {
 	/*
 	 * private HibernateTemplate hibernateTemplate;
 	 * 
@@ -26,45 +26,78 @@ public class ModelDao {
 
 	public void add(Model model) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.save(model);
+		try {
+			this.hibernateTemplate.save(model);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void delete(Model model) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.delete(model);
+		try {
+			this.hibernateTemplate.delete(model);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void update(Model model) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.update(model);
+		try {
+			this.hibernateTemplate.update(model);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where dm=?", dm);
+		try {
+			return this.hibernateTemplate.find("from Model where dm=?", dm);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm, String name, int model) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate
-				.find("from Model where dm=? and user=? and model=?", dm, name,
-						model);
+		try {
+			return this.hibernateTemplate.find(
+					"from Model where dm=? and user=? and model=?", dm, name,
+					model);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm, String name) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where dm=? and user=?",
-				dm, name);
+		try {
+			return this.hibernateTemplate.find(
+					"from Model where dm=? and user=?", dm, name);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByName(String name) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where user=?", name);
+		try {
+			return this.hibernateTemplate.find("from Model where user=?", name);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
+
 	}
 
 	public List selectAll() {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model");
+		try {
+			return this.hibernateTemplate.find("from Model");
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	/*
@@ -75,18 +108,29 @@ public class ModelDao {
 
 	public List selectAllByDate(String date) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where date=?", date);
+		try {
+			return this.hibernateTemplate.find("from Model where date=?", date);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDmAndDate(String date, String dm) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where date=? and dm=?",
-				date, dm);
+		try {
+			return this.hibernateTemplate.find(
+					"from Model where date=? and dm=?", date, dm);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectById(Integer mid) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Model where mid=?",
-				mid);
+		try {
+			return this.hibernateTemplate.find("from Model where mid=?", mid);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 }

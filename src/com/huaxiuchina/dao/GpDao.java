@@ -11,7 +11,7 @@ import com.huaxiuchina.model.Gp;
 import com.huaxiuchina.util.XLSWriter;
 
 // 当日成交
-public class GpDao {
+public class GpDao extends HibernateTemplate {
 	/*
 	 * private HibernateTemplate hibernateTemplate;
 	 * 
@@ -25,27 +25,47 @@ public class GpDao {
 
 	public void add(Gp gp) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.save(gp);
+		try {
+			this.hibernateTemplate.save(gp);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void delete(Gp gp) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.delete(gp);
+		try {
+			this.hibernateTemplate.delete(gp);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void update(Gp gp) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.update(gp);
+		try {
+			this.hibernateTemplate.update(gp);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp where dm=?", dm);
+		try {
+			return this.hibernateTemplate.find("from Gp where dm=?", dm);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectAll() {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp");
+		try {
+			return this.hibernateTemplate.find("from Gp");
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	/*
@@ -56,20 +76,34 @@ public class GpDao {
 
 	public List selectAllByDate(String date) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp where date=?", date);
+		try {
+			return this.hibernateTemplate.find("from Gp where date=?", date);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDmAndDate(String date, String dm) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp where date=? and dm=?",
-				date, dm);
+		try {
+			return this.hibernateTemplate.find("from Gp where date=? and dm=?",
+					date, dm);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void deleteByDate(String date) {
 		// TODO Auto-generated method stub
-		List list = this.hibernateTemplate.find("from Gp where date=?", date);
-		System.out.println("date"+date);
-		System.out.println(list.size());
-		this.hibernateTemplate.deleteAll(list);
+		try {
+			List list = this.hibernateTemplate.find("from Gp where date=?",
+					date);
+			System.out.println("date" + date);
+			System.out.println(list.size());
+			this.hibernateTemplate.deleteAll(list);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
+
 	}
 }

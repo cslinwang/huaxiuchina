@@ -11,7 +11,7 @@ import com.huaxiuchina.model.Daydeal;
 import com.huaxiuchina.util.XLSWriter;
 
 // 当日成交
-public class DaydealDao {
+public class DaydealDao extends HibernateTemplate {
 
 	/*
 	 * private HibernateTemplate hibernateTemplate;
@@ -20,67 +20,114 @@ public class DaydealDao {
 	 * this.hibernateTemplate = hibernateTemplate; }
 	 */
 
-	public ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-	private HibernateTemplate hibernateTemplate = (HibernateTemplate) ac.getBean("hibernateTemplate");
+	public ApplicationContext ac = new ClassPathXmlApplicationContext(
+			"applicationContext.xml");
+	private HibernateTemplate hibernateTemplate = (HibernateTemplate) ac
+			.getBean("hibernateTemplate");
 
 	public void add(Daydeal daydeal) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.save(daydeal);
+		try {
+			this.hibernateTemplate.save(daydeal);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void delete(Daydeal daydeal) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.delete(daydeal);
+		try {
+			this.hibernateTemplate.delete(daydeal);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public void update(Daydeal daydeal) {
 		// TODO Auto-generated method stub
-		this.hibernateTemplate.update(daydeal);
+		try {
+			this.hibernateTemplate.update(daydeal);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List select(Daydeal daydeal) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Daydeal where dm=?",
-				daydeal.getDm());
+		try {
+			return this.hibernateTemplate.find("from Daydeal where dm=?",
+					daydeal.getDm());
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectAll() {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Daydeal");
+		try {
+			return this.hibernateTemplate.find("from Daydeal");
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectAll(String username, String date) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find(
-				"from Daydeal where username=? and date=?", username, date);
+		try {
+			return this.hibernateTemplate.find(
+					"from Daydeal where username=? and date=?", username, date);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm) {
-		return this.hibernateTemplate.find("from Daydeal where dm=?", dm);
+		try {
+			return this.hibernateTemplate.find("from Daydeal where dm=?", dm);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm, String username) {
-		return this.hibernateTemplate.find(
-				"from Daydeal where dm=? and username=?", dm, username);
+		try {
+			return this.hibernateTemplate.find(
+					"from Daydeal where dm=? and username=?", dm, username);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 
 	public List selectByDm(String dm, String username, String date) {
-		return this.hibernateTemplate.find(
-				"from Daydeal where dm=? and date=? and username=?", dm, date,
-				username);
+		try {
+			return this.hibernateTemplate.find(
+					"from Daydeal where dm=? and date=? and username=?", dm,
+					date, username);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
-	public List selectById(Integer id){
-		return this.hibernateTemplate.find(
-				"from Daydeal where dealid=?",id);
+
+	public List selectById(Integer id) {
+		try {
+			return this.hibernateTemplate.find("from Daydeal where dealid=?",
+					id);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
-	/*删除今日交易信息*/
-	public void deleteByDate(String username,String date) {
+
+	/* 删除今日交易信息 */
+	public void deleteByDate(String username, String date) {
 		// TODO Auto-generated method stub
-		List list=this.hibernateTemplate.find(
-				"from Daydeal where date=? and username=?",  date,
-				username);
-		System.out.println(date+username);
-		System.out.println(list.size());
-		this.hibernateTemplate.deleteAll(list);
+		try {
+			List list = this.hibernateTemplate.find(
+					"from Daydeal where date=? and username=?", date, username);
+			System.out.println(date + username);
+			System.out.println(list.size());
+			this.hibernateTemplate.deleteAll(list);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
 	}
 }
