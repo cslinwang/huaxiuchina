@@ -66,9 +66,17 @@ public class GpAction implements ModelDriven<Gp> {
 		gp.setK(k);
 		gp.setJ(j);
 		serviceImp.update(gp);
-		
+
 		session.put("gplist",
 				serviceImp.selectAllByDate(new GetDate().getDate()));
 		return "gpUpdate1";
+	}
+
+	// É¾³ý½ñÈÕ¹ÉÆ±
+	public String gpDeleteToday() throws Exception {
+		String date = new GetDate().getDate();
+		serviceImp.deleteByDate(date);
+		session.put("gplist", serviceImp.selectAllByDate(date));
+		return "gpDeleteToday";
 	}
 }

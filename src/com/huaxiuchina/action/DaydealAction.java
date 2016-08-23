@@ -61,4 +61,10 @@ public class DaydealAction implements ModelDriven<Daydeal> {
 		session.put("daydeallist", new DaydealDao().selectAll(name, new GetDate().getDate()));
 		return "daydealUpdate1";
 	}
+	public String gdaydealDeleteToday() throws Exception{
+		String date=new GetDate().getDate();
+		daydealDao.deleteByDate(name, date);
+		session.put("daydeallist", new DaydealDao().selectAll(name, new GetDate().getDate()));
+		return "gdaydealDeleteToday";
+	}
 }

@@ -26,6 +26,11 @@
 			method="gpUpdate1">
 			<result name="gpUpdate1">/gp/gplist.jsp</result>
 		</action>
+		<!-- 删除今日股票 -->
+		<action name="gpDeleteToday" class="com.huaxiuchina.action.GpAction"
+			method="gpDeleteToday">
+			<result name="gpDeleteToday">/gp/gplist.jsp</result>
+		</action>
 	</package>
 	<!-- 成交记录 -->
 	<package name="daydeal" extends="struts-default" namespace="/">
@@ -60,6 +65,11 @@
 		<action name="daydealUpdate1" class="com.huaxiuchina.action.DaydealAction"
 			method="daydealUpdate1">
 			<result name="daydealUpdate1">/daydeal/daydeallist.jsp</result>
+		</action>
+		<!-- 删除今日成交 -->
+		<action name="gdaydealDeleteToday" class="com.huaxiuchina.action.DaydealAction"
+			method="gdaydealDeleteToday">
+			<result name="gdaydealDeleteToday">/daydeal/daydeallist.jsp</result>
 		</action>
 	</package>
 	<!-- 模型 -->

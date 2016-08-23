@@ -12,14 +12,16 @@ import com.huaxiuchina.util.XLSWriter;
 
 // 当日成交
 public class GpDao {
-	/*private HibernateTemplate hibernateTemplate;
-
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-	}*/
+	/*
+	 * private HibernateTemplate hibernateTemplate;
+	 * 
+	 * public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+	 * this.hibernateTemplate = hibernateTemplate; }
+	 */
 	public ApplicationContext ac = new ClassPathXmlApplicationContext(
 			"applicationContext.xml");
-	private HibernateTemplate hibernateTemplate =  (HibernateTemplate) ac.getBean("hibernateTemplate");
+	private HibernateTemplate hibernateTemplate = (HibernateTemplate) ac
+			.getBean("hibernateTemplate");
 
 	public void add(Gp gp) {
 		// TODO Auto-generated method stub
@@ -38,29 +40,36 @@ public class GpDao {
 
 	public List selectByDm(String dm) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp where dm=?",
-				dm);
+		return this.hibernateTemplate.find("from Gp where dm=?", dm);
 	}
 
 	public List selectAll() {
 		// TODO Auto-generated method stub
 		return this.hibernateTemplate.find("from Gp");
 	}
-	/*public static void main(String[] args) throws IOException {
-		System.out.println("开始读取");
-		GpDao dao =new GpDao();
-		new XLSWriter().XLSWriter(dao.selectAll());
-	}*/
-	
+
+	/*
+	 * public static void main(String[] args) throws IOException {
+	 * System.out.println("开始读取"); GpDao dao =new GpDao(); new
+	 * XLSWriter().XLSWriter(dao.selectAll()); }
+	 */
+
 	public List selectAllByDate(String date) {
 		// TODO Auto-generated method stub
-		return this.hibernateTemplate.find("from Gp where date=?",
-				date);
+		return this.hibernateTemplate.find("from Gp where date=?", date);
 	}
-	public List selectByDmAndDate(String date,String dm) {
+
+	public List selectByDmAndDate(String date, String dm) {
 		// TODO Auto-generated method stub
 		return this.hibernateTemplate.find("from Gp where date=? and dm=?",
-				date,dm);
+				date, dm);
+	}
+
+	public void deleteByDate(String date) {
+		// TODO Auto-generated method stub
+		List list = this.hibernateTemplate.find("from Gp where date=?", date);
+		System.out.println("date"+date);
+		System.out.println(list.size());
+		this.hibernateTemplate.deleteAll(list);
 	}
 }
- 

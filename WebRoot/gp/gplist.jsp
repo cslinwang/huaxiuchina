@@ -37,6 +37,21 @@
 						<TD height=30>股票列表</TD>
 						<TD align=right colSpan=2>&nbsp;</TD>
 					</TR>
+					
+				</TBODY>
+			</TABLE>
+		</DIV>
+		<DIV class=searchzone>
+			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
+				<TBODY>
+					<TR>
+						<TD height=30><b>操作</b></TD>
+					</TR>
+					<TR>
+						<TD height=30>**<a href="gpDeleteToday"><b>删除今日大盘信息</b></a>	**					
+					</a></td>
+					</TR>
+
 				</TBODY>
 			</TABLE>
 		</DIV>

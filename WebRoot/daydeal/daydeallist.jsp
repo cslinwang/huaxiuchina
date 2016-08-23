@@ -36,9 +36,28 @@
 						<TD height=30>交易列表</TD>
 						<TD align=right colSpan=2>&nbsp;</TD>
 					</TR>
+
 				</TBODY>
 			</TABLE>
 		</DIV>
+		<DIV class=searchzone>
+			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
+				<TBODY>
+					<TR>
+						<TD height=30><b>操作</b>
+						</TD>
+					</TR>
+					<TR>
+						<TD height=30>**<a
+							href="gdaydealDeleteToday?name=${sessionScope.user.name }"><b>删除今日交易信息</b>
+						</a>** <a href="modelUpdate2?name=${sessionScope.user.name }"><b>更新账户模型</b>
+						</a>**</td>
+					</TR>
+
+				</TBODY>
+			</TABLE>
+		</DIV>
+
 		<div class=tablezone>
 			<table>
 				<tr align="center" bgcolor="#ebf0f7">
@@ -70,15 +89,12 @@
 						<td height="24">${daydeallist.base }</td>
 						<td height="24">${daydeallist.sum }</td>
 						<td><a href="daydealUpdate?dealid=${daydeallist.dealid }">编辑</a>
-						<%-- |<a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">删除</a> --%>
+							<%-- |<a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">删除</a> --%>
 						</td>
 					</tr>
 				</c:forEach>
 				<tr align="center" bgcolor="#ebf0f7">
-					<td><a
-						href="modelUpdate2?name=${sessionScope.user.name }"><b>更新账户模型</b>
-					</a>
-					</td>
+
 				</tr>
 				<DIV class=searchzone></DIV>
 			</table>

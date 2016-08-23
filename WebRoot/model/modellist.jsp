@@ -39,6 +39,21 @@
 				</TBODY>
 			</TABLE>
 		</DIV>
+			<DIV class=searchzone>
+			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
+				<TBODY>
+					<TR>
+						<TD height=30><b>操作</b></TD>
+					</TR>
+					<TR>
+						<td>**<a
+						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b>
+					</a>**</td>
+					</TR>
+
+				</TBODY>
+			</TABLE>
+		</DIV>
 		<div class=tablezone>
 			<table>
 				<tr align="center" bgcolor="#ebf0f7">
@@ -65,9 +80,7 @@
 					</tr>
 				</c:forEach>
 				<tr align="center" bgcolor="#ebf0f7">
-					<td><a
-						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b>
-					</a></td>
+					
 				</tr>
 				<DIV class=searchzone></DIV>
 			</table>

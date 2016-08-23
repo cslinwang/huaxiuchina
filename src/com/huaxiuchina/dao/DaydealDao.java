@@ -73,5 +73,14 @@ public class DaydealDao {
 		return this.hibernateTemplate.find(
 				"from Daydeal where dealid=?",id);
 	}
-
+	/*删除今日交易信息*/
+	public void deleteByDate(String username,String date) {
+		// TODO Auto-generated method stub
+		List list=this.hibernateTemplate.find(
+				"from Daydeal where date=? and username=?",  date,
+				username);
+		System.out.println(date+username);
+		System.out.println(list.size());
+		this.hibernateTemplate.deleteAll(list);
+	}
 }
