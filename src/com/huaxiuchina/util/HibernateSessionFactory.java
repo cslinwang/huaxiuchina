@@ -52,7 +52,7 @@ public class HibernateSessionFactory {
 			if (sessionFactory == null) {
 				rebuildSessionFactory();
 			}
-			session = (sessionFactory != null) ? sessionFactory.openSession()
+			session = (sessionFactory != null) ? sessionFactory.getCurrentSession()
 					: null;
 			threadLocal.set(session);
 		}

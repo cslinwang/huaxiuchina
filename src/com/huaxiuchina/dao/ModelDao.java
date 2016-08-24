@@ -86,7 +86,7 @@ public class ModelDao extends HibernateTemplate {
 		try {
 			return this.hibernateTemplate.find("from Model where user=?", name);
 		} finally {
-			hibernateTemplate.getSessionFactory().close();
+			hibernateTemplate.getSessionFactory().openSession().close();
 		}
 
 	}

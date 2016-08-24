@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -184,6 +185,18 @@ public class GuideOut {
 		System.out.println("sellSize" + sellGuide.size());
 		guideList.add(buyGuide);
 		guideList.add(sellGuide);
+		/*Comparator<Guide> comparator = new Comparator<Guide>() {
+			public int compare(Guide d1, Guide d2) {
+				//
+				double temp = Double.valueOf(d1.getCjjg())
+						- Double.valueOf(d2.getCjjg());
+				if (temp >= 0) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		};*/
 		return guideList;
 
 	}

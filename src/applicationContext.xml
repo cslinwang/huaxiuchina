@@ -104,8 +104,8 @@
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userDao" class="com.huaxiuchina.dao.UserDao">
+	<!-- <bean id="userDao" class="com.huaxiuchina.dao.UserDao">
 		<property name="hibernateTemplate" ref="hibernateTemplate">
 		</property>
-	</bean>
+	</bean> -->
 </beans>
