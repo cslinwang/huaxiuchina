@@ -377,6 +377,7 @@ public class DaydealCheck {
 
 			}
 			// ÐÞÕý
+
 			new DayDealInCheck().dayDealInCheck(name);
 		}
 	}
