@@ -69,7 +69,12 @@
 		<!-- 删除今日成交 -->
 		<action name="gdaydealDeleteToday" class="com.huaxiuchina.action.DaydealAction"
 			method="gdaydealDeleteToday">
-			<result name="gdaydealDeleteToday">/daydeal/daydeallist.jsp</result>
+			<result name="gdaydealDeleteToday">/daydeal/daydealupload.jsp</result>
+		</action>
+		<!-- daydealInCheck -->
+		<action name="daydealInCheck" class="com.huaxiuchina.action.DaydealAction"
+			method="daydealInCheck">
+			<result name="daydealInCheck">/daydeal/daydeallist.jsp</result>
 		</action>
 	</package>
 	<!-- 模型 -->

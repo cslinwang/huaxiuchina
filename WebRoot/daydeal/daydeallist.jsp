@@ -50,7 +50,8 @@
 					<TR>
 						<TD height=30>**<a
 							href="gdaydealDeleteToday?name=${sessionScope.user.name }"><b>删除今日交易信息</b>
-						</a>** <a href="modelUpdate2?name=${sessionScope.user.name }"><b>更新账户模型</b>
+						</a>** <a href="daydealInCheck?name=${sessionScope.user.name }"><b>更新今日交易信息</b>
+						</a>**<a href="modelUpdate2?name=${sessionScope.user.name }"><b>更新账户模型</b>
 						</a>**</td>
 					</TR>
 

@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.huaxiuchina.dao.DaydealDao;
 import com.huaxiuchina.model.Daydeal;
 import com.huaxiuchina.model.Gp;
+import com.huaxiuchina.util.DayDealInCheck;
 import com.huaxiuchina.util.GetDate;
 import com.huaxiuchina.util.GuideProduce;
 import com.opensymphony.xwork2.ActionContext;
@@ -66,5 +67,12 @@ public class DaydealAction implements ModelDriven<Daydeal> {
 		daydealDao.deleteByDate(name, date);
 		session.put("daydeallist", new DaydealDao().selectAll(name, new GetDate().getDate()));
 		return "gdaydealDeleteToday";
+	}
+	//交易记录更新
+	public String daydealInCheck() throws Exception {
+		System.out.println("交易记录更新");
+		new DayDealInCheck().dayDealInCheck(name);
+		session.put("daydeallist", new DaydealDao().selectAll(name, new GetDate().getDate()));
+		return "daydealInCheck";
 	}
 }
