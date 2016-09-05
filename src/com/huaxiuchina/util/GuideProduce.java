@@ -10,9 +10,11 @@ import java.util.List;
 import com.huaxiuchina.dao.DaydealDao;
 import com.huaxiuchina.dao.GpDao;
 import com.huaxiuchina.dao.ModelDao;
+import com.huaxiuchina.dao.StatusDao;
 import com.huaxiuchina.model.Daydeal;
 import com.huaxiuchina.model.Gp;
 import com.huaxiuchina.model.Model;
+import com.huaxiuchina.model.Status;
 
 public class GuideProduce {
 	GpDao gpDao = new GpDao();
@@ -35,6 +37,7 @@ public class GuideProduce {
 	Gp tempGp = new Gp();
 	Model modell = new Model();
 	ModelDao modelDao = new ModelDao();
+	Status status = new Status();
 
 	public List getOnly(String username) throws Exception {
 		all = daydealDao.selectAll(username, new GetDate().getDate()); // 拿到所有股票
@@ -110,13 +113,17 @@ public class GuideProduce {
 	}
 
 	// 如果只买
-	public void onlyBuy(String name, String dm1, String mc1, List temp) {
+	public void onlyBuy(String name, String dm1, String mc1, List temp)
+			throws Exception {
 		Double price = 0.00;
 		int sum = 0;
 		// 用户
+		status.setFalg("买");
 		modell.setUser(name);
+		status.setName(name);
 		// 代码
 		modell.setDm(dm1);
+		status.setMc(mc1);
 		// 遍历算股票的交易总数量
 		for (int l = 0; l < temp.size(); l++) {
 			daydeal = (Daydeal) temp.get(l);
@@ -134,6 +141,10 @@ public class GuideProduce {
 		}
 		// 买入价格
 		modell.setPrice(df.format(price));
+		status.setPrice(df.format(price));
+		status.setDate(new GetDate().getDate());
+		new StatusDao().add(status);
+		System.out.println("今日买");
 		// 明日跌停价格
 		// System.out.println("t_dm1 " + dm1);
 		// 获得最新一次交易记录
@@ -286,13 +297,17 @@ public class GuideProduce {
 	}
 
 	// 如果只卖
-	public void onlySell(String name, String dm1, String mc1, List temp) {
+	public void onlySell(String name, String dm1, String mc1, List temp)
+			throws Exception {
 		Double price = 0.00;
 		int sum = 0;
 		// 用户
+		status.setFalg("卖");
 		modell.setUser(name);
+		status.setName(name);
 		// 代码
 		modell.setDm(dm1);
+		status.setMc(mc1);
 		// 遍历算股票的交易总数量
 		for (int l = 0; l < temp.size(); l++) {
 			daydeal = (Daydeal) temp.get(l);
@@ -304,6 +319,10 @@ public class GuideProduce {
 			price += Double.valueOf(daydeal.getCjjg())
 					* Double.valueOf(daydeal.getCjsl()) / sum;
 		}
+		status.setDate(new GetDate().getDate());
+		status.setPrice(df.format(price));
+		new StatusDao().add(status);
+		System.out.println("今日卖");
 		daydeal = (Daydeal) temp.get(temp.size() - 1);
 		int model = daydeal.getModel();
 		int base = Integer.valueOf(daydeal.getBase());
@@ -380,7 +399,8 @@ public class GuideProduce {
 	}
 
 	// 如果有买有卖
-	public void both(String name, String dm1, String mc1, List temp) {
+	public void both(String name, String dm1, String mc1, List temp)
+			throws Exception {
 		int temp2 = 0;
 		Double price = 0.00;
 		int sumBuy = 0, sumSell = 0;
@@ -424,6 +444,9 @@ public class GuideProduce {
 		}
 		// 接受函数返回的model的数量和模型阶段
 		Model modellTemp = new Model();
+		status.setName(name);
+		status.setMc(mc1);
+		status.setDate(new GetDate().getDate());
 		System.out.println("sumBuy: " + sumBuy + " sumSell: " + sumSell);
 		if (sumBuy >= sumSell) {
 			e = buy.size();
@@ -485,6 +508,9 @@ public class GuideProduce {
 							* Double.valueOf(daydeal.getCjsl()) / sumBuy;
 				}
 			}
+			status.setFalg("买");
+			status.setPrice(df.format(price));
+			System.out.println("今日买");
 			System.out.println("priceToday " + price);
 			priceToday = price;
 			// modell的价格
@@ -608,6 +634,9 @@ public class GuideProduce {
 							* Double.valueOf(daydeal.getCjsl()) / sumSell;
 				}
 			}
+			status.setFalg("卖");
+			status.setPrice(df.format(price));
+			System.out.println("今日卖");
 			// model price
 			System.out.println("t__price:" + price);
 			modell.setPrice(df.format(price));
