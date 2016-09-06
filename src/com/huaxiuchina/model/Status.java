@@ -13,6 +13,7 @@ public class Status implements java.io.Serializable {
 	private String mc;
 	private String date;
 	private String price;
+	private String sum;
 	private String falg;
 
 	// Constructors
@@ -22,11 +23,13 @@ public class Status implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Status(String name, String mc, String date, String price, String falg) {
+	public Status(String name, String mc, String date, String price,
+			String sum, String falg) {
 		this.name = name;
 		this.mc = mc;
 		this.date = date;
 		this.price = price;
+		this.sum = sum;
 		this.falg = falg;
 	}
 
@@ -70,6 +73,14 @@ public class Status implements java.io.Serializable {
 
 	public void setPrice(String price) {
 		this.price = price;
+	}
+
+	public String getSum() {
+		return this.sum;
+	}
+
+	public void setSum(String sum) {
+		this.sum = sum;
 	}
 
 	public String getFalg() {

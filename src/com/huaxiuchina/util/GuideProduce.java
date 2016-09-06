@@ -143,6 +143,7 @@ public class GuideProduce {
 		modell.setPrice(df.format(price));
 		status.setPrice(df.format(price));
 		status.setDate(new GetDate().getDate());
+		status.setSum(String.valueOf(sum));
 		new StatusDao().add(status);
 		System.out.println("今日买");
 		// 明日跌停价格
@@ -321,6 +322,7 @@ public class GuideProduce {
 		}
 		status.setDate(new GetDate().getDate());
 		status.setPrice(df.format(price));
+		status.setSum(String.valueOf(sum));
 		new StatusDao().add(status);
 		System.out.println("今日卖");
 		daydeal = (Daydeal) temp.get(temp.size() - 1);
@@ -510,6 +512,7 @@ public class GuideProduce {
 			}
 			status.setFalg("买");
 			status.setPrice(df.format(price));
+			status.setSum(String.valueOf(sumBuy));
 			System.out.println("今日买");
 			System.out.println("priceToday " + price);
 			priceToday = price;
@@ -636,6 +639,7 @@ public class GuideProduce {
 			}
 			status.setFalg("卖");
 			status.setPrice(df.format(price));
+			status.setSum(String.valueOf(sumSell));
 			System.out.println("今日卖");
 			// model price
 			System.out.println("t__price:" + price);

@@ -22,6 +22,9 @@
         <property name="price" type="string">
             <column name="price" />
         </property>
+        <property name="sum" type="string">
+            <column name="sum" />
+        </property>
         <property name="falg" type="string">
             <column name="falg" />
         </property>

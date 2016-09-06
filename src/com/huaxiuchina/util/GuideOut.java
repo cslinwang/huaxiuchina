@@ -27,10 +27,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.huaxiuchina.dao.DaydealDao;
 import com.huaxiuchina.dao.GpDao;
 import com.huaxiuchina.dao.ModelDao;
+import com.huaxiuchina.dao.StatusDao;
 import com.huaxiuchina.model.Daydeal;
 import com.huaxiuchina.model.Gp;
 import com.huaxiuchina.model.Guide;
 import com.huaxiuchina.model.Model;
+import com.huaxiuchina.model.Status;
 
 /**
  * 
@@ -59,10 +61,11 @@ public class GuideOut {
 	Model modell = new Model();
 	Model modelTemp = new Model();
 	ModelDao modelDao = new ModelDao();
+	StatusDao statusDao = new StatusDao();
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	public static void main(String[] args) throws Exception {
-		new GuideOut().guideProduce("HXSX0020");
+		new GuideOut().guideProduce("HXSX0010");
 	}
 
 	public List guideProduce(String name) throws Exception {
@@ -86,11 +89,19 @@ public class GuideOut {
 			List preModelList = modelDao.selectByDm(modelTemp.getDm(), name,
 					modelTemp.getModel() - 1);
 			double priceLastDay = 0;
-			if (preModelList.size() != 0) {
-				priceLastDay = Double.valueOf(((Model) preModelList.get(0))
+			List statusList = statusDao.byName(name, new GetDate().getDate(),
+					gp.getMc());
+			if (statusList.size() != 0) {
+				System.out.println("有卖出");
+				priceLastDay = Double.valueOf(((Status) statusList.get(0))
 						.getPrice());
 			} else {
-				priceLastDay = priceToday;
+				if (preModelList.size() != 0) {
+					priceLastDay = Double.valueOf(((Model) preModelList.get(0))
+							.getPrice());
+				} else {
+					priceLastDay = priceToday;
+				}
 			}
 			// 判断买入是否有效
 			if (priceLastDay * k >= zs * 0.9) {
@@ -113,7 +124,7 @@ public class GuideOut {
 		}
 		temp = gpDao.selectAllByDate(date);
 
-		// 下阶段补仓
+		// 下阶段建仓
 		for (int i = 0; i < temp.size(); i++) {
 			Gp gp1 = null;
 			gp1 = (Gp) temp.get(i);
@@ -139,6 +150,14 @@ public class GuideOut {
 
 				double priceOld = Double.valueOf(modelTemp.getPrice());
 				double priceNew = Double.valueOf(modelTemp.getPrice());
+				double price1qwe = 0;
+				List statusList = statusDao.byName(name,
+						new GetDate().getDate(), gp1.getMc());
+				if (statusList.size() != 0) {
+					System.out.println("有卖出");
+					priceOld = Double.valueOf(((Status) statusList.get(0))
+							.getPrice());
+				}
 				List preModelList = modelDao.selectByDm(modelTemp.getDm(),
 						name, modelTemp.getModel() - 1);
 				if (preModelList.size() != 0) {
@@ -154,7 +173,6 @@ public class GuideOut {
 					guide.setDm(dm);
 					guide.setMc(gp1.getMc());
 					System.out.println("guide" + guide.getMc());
-					System.out.println("price2323测试" + price1 * k);
 					guide.setPrice(price1 * k);
 					guide.setPrice1(Double.valueOf(gp1.getZx()) * 0.9);
 
@@ -185,18 +203,12 @@ public class GuideOut {
 		System.out.println("sellSize" + sellGuide.size());
 		guideList.add(buyGuide);
 		guideList.add(sellGuide);
-		/*Comparator<Guide> comparator = new Comparator<Guide>() {
-			public int compare(Guide d1, Guide d2) {
-				//
-				double temp = Double.valueOf(d1.getCjjg())
-						- Double.valueOf(d2.getCjjg());
-				if (temp >= 0) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		};*/
+		/*
+		 * Comparator<Guide> comparator = new Comparator<Guide>() { public int
+		 * compare(Guide d1, Guide d2) { // double temp =
+		 * Double.valueOf(d1.getCjjg()) - Double.valueOf(d2.getCjjg()); if (temp
+		 * >= 0) { return 1; } else { return -1; } } };
+		 */
 		return guideList;
 
 	}
