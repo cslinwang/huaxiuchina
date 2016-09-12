@@ -183,7 +183,6 @@ public class GuideProduce {
 					* (Integer.valueOf(modell.getSum()) - Integer
 							.valueOf(modelll.getSum()))
 					/ Integer.valueOf(modell.getSum());
-			System.out.println("asdasd" + price);
 			peiceLastday = price;
 			modell.setPrice(df.format(price));
 			modell.setMid(modelll.getMid());
@@ -261,7 +260,6 @@ public class GuideProduce {
 		// 预期建仓数量
 		// System.out.println("t_model"+model);
 		for (int l = 0; l < model; l++) {
-			System.out.println("?");
 			p += base * (Math.pow(multiple, (l)));
 		}
 		int tepsum = Integer.valueOf(((Daydeal) temp.get(temp.size() - 1))
@@ -346,9 +344,7 @@ public class GuideProduce {
 		// 应该的数量
 		System.out.println("multiple" + multiple);
 		for (int l = 0; l < model; l++) {
-			System.out.println("????");
 			p += base * (Math.pow(multiple, (l)));
-			System.out.println(p);
 		}
 		// 数字
 		int tepsum = Integer.valueOf(((Daydeal) temp.get(temp.size() - 1))
@@ -362,8 +358,12 @@ public class GuideProduce {
 
 		while (true) {
 			if (temp.size() > 0) {
-				if (((Model) temp.get(temp.size() - 1)).getModel() > (model + 1)) {
-					modelDao.delete(((Model) temp.get(temp.size() - 1)));
+				int modelCompare=((Model) temp.get(temp.size() - 1)).getModel();
+				if(modelCompare>10){
+					modelCompare-=10;
+				}
+				if (modelCompare > (model + 1)) {
+					//modelDao.delete(((Model) temp.get(temp.size() - 1)));
 					temp.remove(temp.remove(temp.size() - 1));
 				}
 				break;

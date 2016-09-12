@@ -7,12 +7,13 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver">
 		</property>
-		<property name="url" value="jdbc:mysql://120.24.73.118:3306/mmc">
+		<!-- <property name="url" value="jdbc:mysql://120.24.73.118:3306/mmc"> -->
+		<property name="url" value="jdbc:mysql://121.42.178.99:3306/mmc">
 		<!-- <property name="url" value="jdbc:mysql://localhost:3306/mmc"> -->
 		</property>
 		<property name="username" value="root"></property>
-		<property name="password" value="e20yEIOd6Ugl"></property>
-		<!-- <property name="password" value="mysql"></property> -->
+		<!-- <property name="password" value="e20yEIOd6Ugl"></property> -->
+		<property name="password" value="mysql"></property>
 
 	</bean>
 	<bean id="sessionFactory"
