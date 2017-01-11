@@ -124,6 +124,19 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl>
+
+			<dt>
+				<a href="###" onclick="showHide('items5');" target="_self">做T管理</a>
+			</dt>
+			<dd id="items5" style="display:none;">
+				<ul>
+					<li><a href="statusUpdate?name=${user.name }"
+						target='main'>做T查看</a></li>
+					<!-- <li><a href='cj/cjdownd.jsp' target='main'>成交下载</a></li> -->
+				</ul>
+			</dd>
+		</dl>
 		<!-- Item 4 End -->
 		<%-- <%
 			if (session.getAttribute("model").equals(0)) {

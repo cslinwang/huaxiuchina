@@ -28,5 +28,8 @@
         <property name="sum" type="string">
             <column name="sum" />
         </property>
+        <property name="mc" type="string">
+            <column name="mc" />
+        </property>
     </class>
 </hibernate-mapping>

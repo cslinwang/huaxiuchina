@@ -1,13 +1,18 @@
 package com.huaxiuchina.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import com.huaxiuchina.model.Daydeal;
+import com.huaxiuchina.model.Guide;
 import com.huaxiuchina.model.Model;
+import com.huaxiuchina.util.GetDate;
+import com.huaxiuchina.util.GuideProduce;
 import com.huaxiuchina.util.XLSWriter;
 import com.opensymphony.xwork2.ActionContext;
 
@@ -81,10 +86,40 @@ public class ModelDao extends HibernateTemplate {
 		}
 	}
 
-	public List selectByName(String name) {
+	public List selectByName(String name) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+
+			ArrayList<Model> newList = new ArrayList<Model>();
+			List onlyList = (ArrayList<String>) new GuideProduce()
+					.getOnlyByUser(name);
+			ArrayList<Model> oldList = (ArrayList<Model>) this.hibernateTemplate
+					.find("from Model where user=?", name);
+
+			for (int i = 0; i < onlyList.size(); i++) {
+				String dm = (String) onlyList.get(i);
+				for (int j = 0; j < oldList.size(); j++) {
+					String dm1 = oldList.get(j).getDm();
+					if (dm1.equals(dm)) {
+						newList.add(oldList.get(j));
+
+					}
+
+				}
+
+			}
+			return newList;
+		} finally {
+			hibernateTemplate.getSessionFactory().openSession().close();
+		}
+
+	}
+
+	public List selectByName1(String name) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			return this.hibernateTemplate.find("from Model where user=?", name);
+
 		} finally {
 			hibernateTemplate.getSessionFactory().openSession().close();
 		}

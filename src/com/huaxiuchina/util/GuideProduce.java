@@ -66,6 +66,33 @@ public class GuideProduce {
 		return only;
 	}
 
+	public List getOnlyByUser(String username) throws Exception {
+		all = modelDao.selectByName1(username); // 拿到所有股票
+		// 循环获得股票代码
+		for (int i = 0; i < all.size(); i++) {
+			modell = (Model) all.get(i);
+			// System.out.println(temp.getDm());
+			dm.add(modell.getDm());
+		}
+		// System.out.println(dm);
+		// 去重，通过循环，先放到数组，如果遍历后该dm存在，删除。
+		only.add(dm.get(0));
+		// System.out.println(dm.get(0));
+		if (dm.size() > 1) {
+			for (int i = 1; i < dm.size(); i++) {
+				only.add(dm.get(i));
+				for (int j = 0; j < only.size() - 1; j++) {
+					if (dm.get(i).equals(only.get(j))) {
+						// System.out.println("remove"+j+only);
+						only.remove(only.get(only.size() - 1));
+					}
+				}
+			}
+		}
+		// System.out.println("only: " + only);
+		return only;
+	}
+	
 	public void check(String name) throws Exception {
 		List only = new GuideProduce().getOnly(name);
 		// 遍历查看股票买卖情况
@@ -123,6 +150,8 @@ public class GuideProduce {
 		status.setName(name);
 		// 代码
 		modell.setDm(dm1);
+		modell.setMc(mc1);
+		status.setDm(dm1);
 		status.setMc(mc1);
 		// 遍历算股票的交易总数量
 		for (int l = 0; l < temp.size(); l++) {
@@ -198,7 +227,6 @@ public class GuideProduce {
 					modell.setModel(modell.getModel() + 1);
 					modell.setSum(String.valueOf(tempNum));
 					modell.setPrice(String.valueOf(priceToday));
-					System.out.println("t_shuliang");
 					modelDao.add(modell);
 				} else {
 					modelDao.update(modell);
@@ -306,7 +334,11 @@ public class GuideProduce {
 		status.setName(name);
 		// 代码
 		modell.setDm(dm1);
+		modell.setMc(mc1);
+		
+		status.setDm(dm1);
 		status.setMc(mc1);
+		
 		// 遍历算股票的交易总数量
 		for (int l = 0; l < temp.size(); l++) {
 			daydeal = (Daydeal) temp.get(l);
@@ -358,12 +390,13 @@ public class GuideProduce {
 
 		while (true) {
 			if (temp.size() > 0) {
-				int modelCompare=((Model) temp.get(temp.size() - 1)).getModel();
-				if(modelCompare>10){
-					modelCompare-=10;
+				int modelCompare = ((Model) temp.get(temp.size() - 1))
+						.getModel();
+				if (modelCompare > 10) {
+					modelCompare -= 10;
 				}
 				if (modelCompare > (model + 1)) {
-					//modelDao.delete(((Model) temp.get(temp.size() - 1)));
+					// modelDao.delete(((Model) temp.get(temp.size() - 1)));
 					temp.remove(temp.remove(temp.size() - 1));
 				}
 				break;
@@ -387,6 +420,7 @@ public class GuideProduce {
 			if (temp.size() != 0) {
 				modelDao.delete(modellTemp);
 			}
+
 		} else if (tepsum == 0) {
 			modelDao.delete(modellTemp);
 		} else {
@@ -394,7 +428,17 @@ public class GuideProduce {
 			modellTemp.setSum(String.valueOf((int) p));
 			modelDao.update(modellTemp);
 		}
+		// 删除多余的模型
 
+		int modelDelete = modellTemp.getModel();
+		String userDelete = modellTemp.getUser();
+		String dmDelete = modellTemp.getDm();
+		List<Model> modellDelete = modelDao.selectByDm(dmDelete, userDelete);
+		int countDelete = modellDelete.size() - 1;
+		while (modelDelete < modellDelete.get(countDelete).getModel()) {
+			modelDao.delete(modellDelete.get(countDelete));
+			countDelete--;
+		}
 		// 建仓数量
 		// return new GuideOut().both(both, name);
 		return modell;
@@ -448,6 +492,7 @@ public class GuideProduce {
 		Model modellTemp = new Model();
 		status.setName(name);
 		status.setMc(mc1);
+		status.setDm(dm1);
 		status.setDate(new GetDate().getDate());
 		System.out.println("sumBuy: " + sumBuy + " sumSell: " + sumSell);
 		if (sumBuy >= sumSell) {
@@ -492,7 +537,9 @@ public class GuideProduce {
 			// 用户
 			modell.setUser(name);
 			// 代码
+			modell.setMc(mc1);
 			modell.setDm(dm1);
+			
 			// 遍历算股票的交易总数量
 			sumBuy = sumBuy;
 			// 如果买卖抵消直接返回
@@ -513,6 +560,7 @@ public class GuideProduce {
 			status.setFalg("买");
 			status.setPrice(df.format(price));
 			status.setSum(String.valueOf(sumBuy));
+			new StatusDao().add(status);
 			System.out.println("今日买");
 			System.out.println("priceToday " + price);
 			priceToday = price;
@@ -544,8 +592,6 @@ public class GuideProduce {
 				modelll = (Model) temp.get(0);
 				modelll.getPrice();
 				modelll.getSum();
-				System.out.println("assdasdsadasdasd" + priceToday + " "
-						+ sumBuy);
 				price = Double.valueOf(modelll.getPrice())
 						* (Integer.valueOf(modelll.getSum()))
 						/ Integer.valueOf(modell.getSum()) + priceToday
@@ -625,6 +671,7 @@ public class GuideProduce {
 			modell.setUser(name);
 			// 代码
 			modell.setDm(dm1);
+			modell.setDm(mc1);
 			// 遍历算股票的交易总数量
 			sumSell = sumSell;
 			// 遍历算股票的加权均价
@@ -640,6 +687,7 @@ public class GuideProduce {
 			status.setFalg("卖");
 			status.setPrice(df.format(price));
 			status.setSum(String.valueOf(sumSell));
+			new StatusDao().add(status);
 			System.out.println("今日卖");
 			// model price
 			System.out.println("t__price:" + price);
@@ -661,6 +709,6 @@ public class GuideProduce {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new GuideProduce().check("HXSX0010");
+		new GuideProduce().check("root");
 	}
 }

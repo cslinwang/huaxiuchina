@@ -58,7 +58,14 @@ public class GpDao extends HibernateTemplate {
 			hibernateTemplate.getSessionFactory().close();
 		}
 	}
-
+	public List selectByMc(String mc) {
+		// TODO Auto-generated method stub
+		try {
+			return this.hibernateTemplate.find("from Gp where mc=?", mc);
+		} finally {
+			hibernateTemplate.getSessionFactory().close();
+		}
+	}
 	public List selectAll() {
 		// TODO Auto-generated method stub
 		try {
@@ -106,4 +113,5 @@ public class GpDao extends HibernateTemplate {
 		}
 
 	}
+	
 }

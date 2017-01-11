@@ -65,7 +65,53 @@ public class GuideOut {
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	public static void main(String[] args) throws Exception {
-		new GuideOut().guideProduce("HXSX0010");
+		new GuideOut().guideProduce("HXSX0019");
+		// new GuideOut().test();
+	}
+
+	// 测试用例
+	public void test() {
+		Guide e = new Guide();
+		e.setDm("1");
+		e.setPrice(2);
+		buyGuide.add(e);
+		Guide e1 = new Guide();
+		e1.setDm("1");
+		e1.setPrice(1);
+		buyGuide.add(e1);
+		Guide e2 = new Guide();
+		e2.setDm("2");
+		e2.setPrice(1);
+		buyGuide.add(e2);
+		Guide e3 = new Guide();
+		e3.setDm("4");
+		e3.setPrice(1);
+		buyGuide.add(e3);
+		Guide e4 = new Guide();
+		e4.setDm("3");
+		e4.setPrice(3);
+		buyGuide.add(e4);
+		Guide e5 = new Guide();
+		e5.setDm("1");
+		e5.setPrice(6);
+		buyGuide.add(e5);
+		Guide e6 = new Guide();
+		e6.setDm("3");
+		e6.setPrice(1);
+		buyGuide.add(e6);
+		Guide e7 = new Guide();
+		e7.setDm("1");
+		e7.setPrice(5.23);
+		buyGuide.add(e7);
+		for (int i = 0; i < buyGuide.size(); i++) {
+			System.out.println(((Guide) buyGuide.get(i)).getDm() + "   old"
+					+ ((Guide) buyGuide.get(i)).getPrice());
+		}
+		buyGuide = new GuideOut().sort(buyGuide);
+		for (int i = 0; i < buyGuide.size(); i++) {
+			System.out.println(((Guide) buyGuide.get(i)).getDm() + "  "
+					+ ((Guide) buyGuide.get(i)).getPrice());
+		}
 	}
 
 	public List guideProduce(String name) throws Exception {
@@ -89,8 +135,8 @@ public class GuideOut {
 			List preModelList = modelDao.selectByDm(modelTemp.getDm(), name,
 					modelTemp.getModel() - 1);
 			double priceLastDay = 0;
-			List statusList = statusDao.byName(name, new GetDate().getDate(),
-					gp.getMc());
+			List statusList = statusDao.byDm(name, new GetDate().getDate(),
+					gp.getDm(), "卖");
 			if (statusList.size() != 0) {
 				System.out.println("有卖出");
 				priceLastDay = Double.valueOf(((Status) statusList.get(0))
@@ -128,6 +174,7 @@ public class GuideOut {
 		for (int i = 0; i < temp.size(); i++) {
 			Gp gp1 = null;
 			gp1 = (Gp) temp.get(i);
+			System.out.println("asdasdas" + gp1.getMc());
 			Double k = gp1.getK();
 			Double j = gp1.getJ();
 			String dm = gp1.getDm();
@@ -151,8 +198,9 @@ public class GuideOut {
 				double priceOld = Double.valueOf(modelTemp.getPrice());
 				double priceNew = Double.valueOf(modelTemp.getPrice());
 				double price1qwe = 0;
-				List statusList = statusDao.byName(name,
-						new GetDate().getDate(), gp1.getMc());
+				List statusList = statusDao.byDm(name, new GetDate().getDate(),
+						gp1.getDm().toString(), "卖");
+
 				if (statusList.size() != 0) {
 					System.out.println("有卖出");
 					priceOld = Double.valueOf(((Status) statusList.get(0))
@@ -199,16 +247,12 @@ public class GuideOut {
 				}
 			}
 		}
-		System.out.println("buySize" + buyGuide.size());
-		System.out.println("sellSize" + sellGuide.size());
+		buyGuide = new GuideOut().sort(buyGuide);
+		sellGuide = new GuideOut().sort(sellGuide);
 		guideList.add(buyGuide);
 		guideList.add(sellGuide);
-		/*
-		 * Comparator<Guide> comparator = new Comparator<Guide>() { public int
-		 * compare(Guide d1, Guide d2) { // double temp =
-		 * Double.valueOf(d1.getCjjg()) - Double.valueOf(d2.getCjjg()); if (temp
-		 * >= 0) { return 1; } else { return -1; } } };
-		 */
+		System.out.println("buySize" + buyGuide.size());
+		System.out.println("sellSize" + sellGuide.size());
 		return guideList;
 
 	}
@@ -267,12 +311,54 @@ public class GuideOut {
 		return guide;
 	}
 
+	public List sort(List<Guide> list) {
+		/** 需求：首先按名字存，其次按数量 **/
+
+		List<Guide> listTemp = new ArrayList<Guide>();
+		List<Guide> listNew = new ArrayList<Guide>();
+		Guide guideSort = new Guide();
+		/*
+		 * // 按价格冒泡 for (int i = 0; i < list.size(); i++) {
+		 * 
+		 * for (int j = i + 1; j < list.size(); j++) { double a = (double)
+		 * list.get(i).getPrice(); double b = (double) list.get(j).getPrice();
+		 * if (a > b) { guideSort = list.get(i); list.set(i, list.get(j));
+		 * list.set(j, guideSort); } } }
+		 */
+		for (int i = 0; i < list.size(); i++) {
+			int flag = 0;
+			for (int j = 0; j < listTemp.size(); j++) {
+				if (listTemp.get(j).getDm()
+						.equals(((Guide) list.get(i)).getDm())) {
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0)
+				listTemp.add((Guide) list.get(i));
+
+		}
+
+		for (int i = 0; i < listTemp.size(); i++) {
+			for (int j = 0; j < list.size(); j++) {
+				if (list.get(j).getDm()
+						.equals(((Guide) listTemp.get(i)).getDm()))
+					listNew.add((Guide) list.get(j));
+			}
+
+		}
+
+		return listNew;
+
+	}
+
 	public ByteArrayInputStream guideOut(String name) throws Exception {
 		int hangshu = 0;
 		guideList = new GuideOut().guideProduce(name);
 
 		buyGuide = (List) guideList.get(0);
 		sellGuide = (List) guideList.get(1);
+
 		System.out.println("开始生成");
 
 		// 创建工作薄
@@ -975,4 +1061,5 @@ public class GuideOut {
 		ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
 		return is;
 	}
+
 }

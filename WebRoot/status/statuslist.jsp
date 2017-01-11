@@ -33,22 +33,22 @@
 			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
 				<TBODY>
 					<TR>
-						<TD height=30>模型列表</TD>
+						<TD height=30>做T列表</TD>
 						<TD align=right colSpan=2>&nbsp;</TD>
 					</TR>
 				</TBODY>
 			</TABLE>
 		</DIV>
-			<DIV class=searchzone>
+		<DIV class=searchzone>
 			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
 				<TBODY>
 					<TR>
 						<TD height=30><b>操作</b></TD>
 					</TR>
 					<TR>
-						<td>**<a
-						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b>
-					</a>**</td>
+						<td>**<%-- <a
+						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b> --%>
+							</a>**</td>
 					</TR>
 
 				</TBODY>
@@ -57,32 +57,27 @@
 		<div class=tablezone>
 			<table>
 				<tr align="center" bgcolor="#ebf0f7">
+					<td width="9%" height="25">交易日期</td>
 					<td width="9%" height="25">证券代码</td>
 					<td width="9%" height="25">证券名称</td>
-					<td width="9%" height="25">模型阶段</td>
+					<td width="9%" height="25">买/卖</td>
 					<td width="9%" height="25">平均价格</td>
-					<td width="9%" height="25">建仓基数</td>
-					<td width="9%" height="25">建仓数量</td>
-					<td width="9%" height="25">操作</td>
+					<td width="9%" height="25">交易数量</td>
 				</tr>
-				<c:forEach var="modellist" items="${modellist }">
+				<c:forEach var="statuslist" items="${statuslist }">
 					<tr align='center' bgcolor='#FFFFFF'
 						onmouseover='this.style.background="#F2FDFF"'
 						onmouseout='this.style.background="#FFFFFF"'>
-
-						<td height="24">${modellist.dm }</td>
-						<td height="24">${modellist.mc }</td>
-						<td height="24">${modellist.model }</td>
-						<td height="24">${modellist.price }</td>
-						<td height="24">${modellist.base }</td>
-						<td height="24">${modellist.sum }</td>
-						<td><a href="modelUpdate?mid=${modellist.mid }">编辑</a>
-						<%--| <a href="gpUpdate?dm=${gp.dm }&date=${gp.date }">删除</a> --%>
-						</td>
+						<td height="24">${statuslist.date }</td>
+						<td height="24">${statuslist.dm }</td>
+						<td height="24">${statuslist.mc }</td>
+						<td height="24">${statuslist.falg }</td>
+						<td height="24">${statuslist.price }</td>
+						<td height="24">${statuslist.sum }</td>
 					</tr>
 				</c:forEach>
 				<tr align="center" bgcolor="#ebf0f7">
-					
+
 				</tr>
 				<DIV class=searchzone></DIV>
 			</table>

@@ -15,6 +15,7 @@ public class Model implements java.io.Serializable {
 	private String price;
 	private String base;
 	private String sum;
+	private String mc;
 
 	// Constructors
 
@@ -24,13 +25,14 @@ public class Model implements java.io.Serializable {
 
 	/** full constructor */
 	public Model(String dm, String user, Integer model, String price,
-			String base, String sum) {
+			String base, String sum, String mc) {
 		this.dm = dm;
 		this.user = user;
 		this.model = model;
 		this.price = price;
 		this.base = base;
 		this.sum = sum;
+		this.mc = mc;
 	}
 
 	// Property accessors
@@ -89,6 +91,14 @@ public class Model implements java.io.Serializable {
 
 	public void setSum(String sum) {
 		this.sum = sum;
+	}
+
+	public String getMc() {
+		return this.mc;
+	}
+
+	public void setMc(String mc) {
+		this.mc = mc;
 	}
 
 }
