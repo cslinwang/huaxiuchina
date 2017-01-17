@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.huaxiuchina.dao.StatusDao;
+import com.huaxiuchina.dao.TDao;
 import com.huaxiuchina.model.Status;
 import com.huaxiuchina.model.Gp;
 import com.huaxiuchina.model.Status;
@@ -33,7 +34,8 @@ public class StatusAction {
 
 	public String statusUpdate() throws Exception {
 
-		session.put("statuslist", new StatusDao().selectByNameAndDate(name, new GetDate().getDate()));
+		session.put("statuslist",
+				new TDao().selectByNameAndDate(name, new GetDate().getDate()));
 		return "statusUpdate";
 	}
 }

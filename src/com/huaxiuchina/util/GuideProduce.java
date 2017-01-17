@@ -7,14 +7,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.DGet;
+
 import com.huaxiuchina.dao.DaydealDao;
 import com.huaxiuchina.dao.GpDao;
 import com.huaxiuchina.dao.ModelDao;
 import com.huaxiuchina.dao.StatusDao;
+import com.huaxiuchina.dao.TDao;
 import com.huaxiuchina.model.Daydeal;
 import com.huaxiuchina.model.Gp;
 import com.huaxiuchina.model.Model;
 import com.huaxiuchina.model.Status;
+import com.huaxiuchina.model.T;
 
 public class GuideProduce {
 	GpDao gpDao = new GpDao();
@@ -38,6 +42,8 @@ public class GuideProduce {
 	Model modell = new Model();
 	ModelDao modelDao = new ModelDao();
 	Status status = new Status();
+	T t = new T();
+	TDao tDao = new TDao();
 
 	public List getOnly(String username) throws Exception {
 		all = daydealDao.selectAll(username, new GetDate().getDate()); // 拿到所有股票
@@ -92,7 +98,7 @@ public class GuideProduce {
 		// System.out.println("only: " + only);
 		return only;
 	}
-	
+
 	public void check(String name) throws Exception {
 		List only = new GuideProduce().getOnly(name);
 		// 遍历查看股票买卖情况
@@ -335,10 +341,10 @@ public class GuideProduce {
 		// 代码
 		modell.setDm(dm1);
 		modell.setMc(mc1);
-		
+
 		status.setDm(dm1);
 		status.setMc(mc1);
-		
+
 		// 遍历算股票的交易总数量
 		for (int l = 0; l < temp.size(); l++) {
 			daydeal = (Daydeal) temp.get(l);
@@ -447,6 +453,13 @@ public class GuideProduce {
 	// 如果有买有卖
 	public void both(String name, String dm1, String mc1, List temp)
 			throws Exception {
+
+		// 做T指导模型
+		t.setDate(new GetDate().getDate());
+		t.setUser(name);
+		t.setDm(dm1);
+		t.setMc(mc1);
+
 		int temp2 = 0;
 		Double price = 0.00;
 		int sumBuy = 0, sumSell = 0;
@@ -495,6 +508,66 @@ public class GuideProduce {
 		status.setDm(dm1);
 		status.setDate(new GetDate().getDate());
 		System.out.println("sumBuy: " + sumBuy + " sumSell: " + sumSell);
+		// 做T指导
+		if (sumBuy == sumSell) {
+			int TBuyPrice = 0, TSellPrice = 0;
+			for (int i = 0; i < buy.size(); i++) {
+				TBuyPrice += Integer.valueOf(((Daydeal) buy.get(i)).getCjjg())
+						* Integer.valueOf(((Daydeal) buy.get(i)).getCjsl());
+			}
+			for (int i = 0; i < sell.size(); i++) {
+				TSellPrice += Integer
+						.valueOf(((Daydeal) sell.get(i)).getCjjg())
+						* Integer.valueOf(((Daydeal) sell.get(i)).getCjsl());
+			}
+			// 买入做T
+			t.setFc("买入");
+			t.setJg(String.valueOf(TBuyPrice / sumBuy));
+			t.setSl(String.valueOf(sumBuy));
+			tDao.add(t);
+			// 卖出做T
+			t.setFc("卖出");
+			t.setJg(String.valueOf(TSellPrice / sumSell));
+			t.setSl(String.valueOf(sumSell));
+			tDao.add(t);
+
+		} else {
+			int TBuyPrice = 0, TSellPrice = 0;
+			int TSum = 0;
+			for (int i = 0; i < buy.size(); i++) {
+				int TTBuySum = Integer
+						.valueOf(((Daydeal) buy.get(i)).getCjsl());
+				for (int j = 0; j < sell.size(); j++) {
+					int TTSellSum = Integer.valueOf(((Daydeal) sell.get(j))
+							.getCjsl());
+					// 找到买入卖出相等的所有交易
+					if (TTBuySum == TTSellSum) {
+						TSum += TTBuySum;
+						TBuyPrice += Integer.valueOf(((Daydeal) buy.get(i))
+								.getCjjg())
+								* Integer.valueOf(((Daydeal) buy.get(i))
+										.getCjsl());
+						TSellPrice += Integer.valueOf(((Daydeal) sell.get(j))
+								.getCjjg())
+								* Integer.valueOf(((Daydeal) sell.get(j))
+										.getCjsl());
+					}
+				}
+
+			}
+			t.setFc("买入");
+			t.setJg(String.valueOf(TBuyPrice / TSum));
+			t.setSl(String.valueOf(TSum));
+			t.setSy(String.valueOf(TSellPrice - TBuyPrice));
+			tDao.add(t);
+			// 卖出做T
+			t.setFc("卖出");
+			t.setJg(String.valueOf(TSellPrice / TSum));
+			t.setSl(String.valueOf(TSum));
+			tDao.add(t);
+		}
+
+		// 交易指导
 		if (sumBuy >= sumSell) {
 			e = buy.size();
 			d = 0;
@@ -539,7 +612,7 @@ public class GuideProduce {
 			// 代码
 			modell.setMc(mc1);
 			modell.setDm(dm1);
-			
+
 			// 遍历算股票的交易总数量
 			sumBuy = sumBuy;
 			// 如果买卖抵消直接返回

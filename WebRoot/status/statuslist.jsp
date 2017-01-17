@@ -45,11 +45,13 @@
 					<TR>
 						<TD height=30><b>操作</b></TD>
 					</TR>
+
 					<TR>
-						<td>**<%-- <a
-						href="daydealDownloadAction?name=${sessionScope.user.name }"><b>下载本日交易指南</b> --%>
-							</a>**</td>
+						<td>**<a
+							href="tDownloadAction?name=${sessionScope.user.name }"><b>下载本日做T情况</b>
+						</a>**</td>
 					</TR>
+
 
 				</TBODY>
 			</TABLE>
@@ -60,9 +62,11 @@
 					<td width="9%" height="25">交易日期</td>
 					<td width="9%" height="25">证券代码</td>
 					<td width="9%" height="25">证券名称</td>
-					<td width="9%" height="25">买/卖</td>
+					<td width="9%" height="25">交易方向</td>
 					<td width="9%" height="25">平均价格</td>
 					<td width="9%" height="25">交易数量</td>
+					<td width="9%" height="25">交易金额</td>
+					<td width="9%" height="25">收益</td>
 				</tr>
 				<c:forEach var="statuslist" items="${statuslist }">
 					<tr align='center' bgcolor='#FFFFFF'
@@ -71,9 +75,11 @@
 						<td height="24">${statuslist.date }</td>
 						<td height="24">${statuslist.dm }</td>
 						<td height="24">${statuslist.mc }</td>
-						<td height="24">${statuslist.falg }</td>
-						<td height="24">${statuslist.price }</td>
-						<td height="24">${statuslist.sum }</td>
+						<td height="24">${statuslist.fc }</td>
+						<td height="24">${statuslist.jg }</td>
+						<td height="24">${statuslist.sl }</td>
+						<td height="24">${statuslist.sl*statuslist.jg }</td>
+						<td height="24">${statuslist.sy }</td>
 					</tr>
 				</c:forEach>
 				<tr align="center" bgcolor="#ebf0f7">

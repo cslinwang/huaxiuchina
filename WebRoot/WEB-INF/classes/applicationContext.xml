@@ -34,6 +34,7 @@
 				<value>com/huaxiuchina/model/User.hbm.xml</value>
 				<value>com/huaxiuchina/model/Model.hbm.xml</value>
 				<value>com/huaxiuchina/model/Status.hbm.xml</value>
+				<value>com/huaxiuchina/model/T.hbm.xml</value>
 			</list>
 		</property>
 	</bean>

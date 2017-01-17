@@ -8,6 +8,19 @@
 			method="statusUpdate">
 			<result name="statusUpdate">/status/statuslist.jsp</result>
 		</action>
+		<!-- 下载 -->
+		<action name="tDownloadAction" class="com.huaxiuchina.action.TDownloadAction"
+			method="exportExcel">
+			<result name="success" type="stream">
+				<!-- 下载文件的类型,文件类型对照表参看 http://tool.oschina.net/commons -->
+				<param name="contentType">application/vnd.ms-excel</param>
+				<!-- 返回流 excelStream为action中的流变量名称 -->
+				<param name="inputName">excelStream</param>
+				<!-- 文件下载的处理方式，包括内联(inline)和附件(attachment) 提示下载 -->
+				<param name="contentDisposition">attachment;filename=${excelFileName}</param>
+				<param name="bufferSize">2048</param>
+			</result>
+		</action>
 	</package>
 	<!-- 股票 -->
 	<package name="gp" extends="struts-default" namespace="/">

@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DaydealDownloadAction extends ActionSupport {
+public class TDownloadAction extends ActionSupport {
 	private String name;
 
 	public String getName() {
@@ -28,10 +28,10 @@ public class DaydealDownloadAction extends ActionSupport {
 	/** 导出Excel测试 */
 	public String exportExcel() {
 		try {
-			ByteArrayInputStream is = new GuideOut().guideOut(name);
+			ByteArrayInputStream is = new TOut().tOut(name);
 
 			excelStream = is; // 文件流
-			excelFileName = name + "_" + new GetDate().getDate() + ".xls"; // 设置下载的文件名
+			excelFileName = "T_"+name + "_" + new GetDate().getDate() + ".xls"; // 设置下载的文件名
 			System.out.println("生成完毕: " + excelFileName);
 		} catch (Exception e) {
 			e.printStackTrace();
