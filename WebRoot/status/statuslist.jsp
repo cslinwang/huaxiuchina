@@ -1,4 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,java.text.DecimalFormat"
+	pageEncoding="utf-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -25,8 +26,11 @@
 <link href="./images/style.css" type=text/css rel=stylesheet>
 <link rel="stylesheet" type="text/css" media="screen"
 	href="./css/tinyTips.css" />
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>  
 </head>
-
+<%
+	java.text.DecimalFormat df = new DecimalFormat("#.00"); // 格式化double
+%>
 <body>
 	<div class=formzone>
 		<DIV class=searchzone>
@@ -43,7 +47,8 @@
 			<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
 				<TBODY>
 					<TR>
-						<TD height=30><b>操作</b></TD>
+						<TD height=30><b>操作</b>
+						</TD>
 					</TR>
 
 					<TR>
@@ -78,7 +83,10 @@
 						<td height="24">${statuslist.fc }</td>
 						<td height="24">${statuslist.jg }</td>
 						<td height="24">${statuslist.sl }</td>
-						<td height="24">${statuslist.sl*statuslist.jg }</td>
+						<td height="24"><fmt:formatNumber
+								value=" ${statuslist.sl*statuslist.jg }" pattern="##.##"
+								minFractionDigits="2"></fmt:formatNumber>
+						</td>
 						<td height="24">${statuslist.sy }</td>
 					</tr>
 				</c:forEach>

@@ -2,6 +2,7 @@ package com.huaxiuchina.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -19,6 +20,7 @@ import com.huaxiuchina.dao.TDao;
 import com.huaxiuchina.model.T;
 
 public class TOut {
+	java.text.DecimalFormat df = new DecimalFormat("#.00"); // 格式化double
 	public ByteArrayInputStream tOut(String name) throws Exception {
 		System.out.println("开始生成");
 
@@ -169,9 +171,10 @@ public class TOut {
 
 			cell = row.createCell(5);
 			cell.setCellStyle(cellStyle);
-			int sum = Integer.valueOf(tOut.get(i).getJg())
-					* Integer.valueOf(tOut.get(i).getSl());
-			cell.setCellValue(new XSSFRichTextString(String.valueOf(sum)));
+			Double sum = Double.valueOf(tOut.get(i).getJg())
+					* Double.valueOf(tOut.get(i).getSl());
+			
+			cell.setCellValue(new XSSFRichTextString(df.format(sum)));
 
 			region3 = new CellRangeAddress(k, (short) k + 1, 6, (short) 6);
 			sheet.addMergedRegion(region3);

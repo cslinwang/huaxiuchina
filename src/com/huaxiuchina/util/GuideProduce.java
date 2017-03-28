@@ -510,60 +510,80 @@ public class GuideProduce {
 		System.out.println("sumBuy: " + sumBuy + " sumSell: " + sumSell);
 		// 做T指导
 		if (sumBuy == sumSell) {
-			int TBuyPrice = 0, TSellPrice = 0;
+			Double TBuyPrice = 0.00, TSellPrice = 0.00;
 			for (int i = 0; i < buy.size(); i++) {
-				TBuyPrice += Integer.valueOf(((Daydeal) buy.get(i)).getCjjg())
-						* Integer.valueOf(((Daydeal) buy.get(i)).getCjsl());
+				TBuyPrice += Double.valueOf(((Daydeal) buy.get(i)).getCjjg())
+						* Double.valueOf(((Daydeal) buy.get(i)).getCjsl());
 			}
 			for (int i = 0; i < sell.size(); i++) {
-				TSellPrice += Integer
-						.valueOf(((Daydeal) sell.get(i)).getCjjg())
-						* Integer.valueOf(((Daydeal) sell.get(i)).getCjsl());
+				TSellPrice += Double.valueOf(((Daydeal) sell.get(i)).getCjjg())
+						* Double.valueOf(((Daydeal) sell.get(i)).getCjsl());
 			}
 			// 买入做T
+
 			t.setFc("买入");
-			t.setJg(String.valueOf(TBuyPrice / sumBuy));
-			t.setSl(String.valueOf(sumBuy));
+			t.setJg(String.valueOf(df.format(TBuyPrice / sumBuy)));
+			t.setSl(String.valueOf(df.format(sumBuy)));
+			t.setSy(String.valueOf(df.format(TSellPrice - TBuyPrice)));
 			tDao.add(t);
 			// 卖出做T
 			t.setFc("卖出");
-			t.setJg(String.valueOf(TSellPrice / sumSell));
-			t.setSl(String.valueOf(sumSell));
+			t.setJg(String.valueOf(df.format(TSellPrice / sumSell)));
+			t.setSl(String.valueOf(df.format(sumSell)));
+			t.setSy(String.valueOf(df.format(TSellPrice - TBuyPrice)));
 			tDao.add(t);
 
 		} else {
-			int TBuyPrice = 0, TSellPrice = 0;
-			int TSum = 0;
-			for (int i = 0; i < buy.size(); i++) {
-				int TTBuySum = Integer
-						.valueOf(((Daydeal) buy.get(i)).getCjsl());
-				for (int j = 0; j < sell.size(); j++) {
-					int TTSellSum = Integer.valueOf(((Daydeal) sell.get(j))
+			Double TBuyPrice = 0.00, TSellPrice = 0.00;
+			Double TSum = 0.00;
+			/* for (int i = 0; i < buy.size()&&i<sell.size(); i++) { */
+			while (buy.size() != 0) {
+				int i = 0;
+				Double TTBuySum = Double.valueOf(((Daydeal) buy.get(i))
+						.getCjsl());
+				// System.out.println("数量++++"+TTBuySum);
+				/* for (int j = 0; j < sell.size(); j++) { */
+				int j = 0;
+				while (sell.size() != 0) {
+					Double TTSellSum = Double.valueOf(((Daydeal) sell.get(j))
 							.getCjsl());
+					// System.out.println("数量----"+TTSellSum);
 					// 找到买入卖出相等的所有交易
-					if (TTBuySum == TTSellSum) {
+					if (TTBuySum - TTSellSum == 0) {
+						System.out.println("shenma ??");
 						TSum += TTBuySum;
-						TBuyPrice += Integer.valueOf(((Daydeal) buy.get(i))
+						// System.out.println("价格！！！！"+ ((Daydeal)
+						// buy.get(i)).getCjjg());
+						TBuyPrice += Double.valueOf(((Daydeal) buy.get(i))
 								.getCjjg())
-								* Integer.valueOf(((Daydeal) buy.get(i))
+								* Double.valueOf(((Daydeal) buy.get(i))
 										.getCjsl());
-						TSellPrice += Integer.valueOf(((Daydeal) sell.get(j))
+						TSellPrice += Double.valueOf(((Daydeal) sell.get(j))
 								.getCjjg())
-								* Integer.valueOf(((Daydeal) sell.get(j))
+								* Double.valueOf(((Daydeal) sell.get(j))
 										.getCjsl());
+						buy.remove(i);
+						sell.remove(j);
+						break;
 					}
+					j++;
 				}
-
+				if (j == sell.size()) {
+					break;
+				}
+				i++;
 			}
 			t.setFc("买入");
-			t.setJg(String.valueOf(TBuyPrice / TSum));
-			t.setSl(String.valueOf(TSum));
-			t.setSy(String.valueOf(TSellPrice - TBuyPrice));
+			t.setJg(String.valueOf(df.format(TBuyPrice / TSum)));
+
+			t.setSl(String.valueOf(df.format(TSum)));
+			t.setSy(String.valueOf(df.format(TSellPrice - TBuyPrice)));
 			tDao.add(t);
 			// 卖出做T
 			t.setFc("卖出");
-			t.setJg(String.valueOf(TSellPrice / TSum));
-			t.setSl(String.valueOf(TSum));
+			t.setJg(String.valueOf(df.format(TSellPrice / TSum)));
+			t.setSl(String.valueOf(df.format(TSum)));
+			t.setSy(String.valueOf(df.format(TSellPrice - TBuyPrice)));
 			tDao.add(t);
 		}
 
@@ -782,6 +802,6 @@ public class GuideProduce {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new GuideProduce().check("root");
+		new GuideProduce().check("HXSX0010");
 	}
 }
